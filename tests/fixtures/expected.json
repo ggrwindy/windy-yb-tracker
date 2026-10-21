@@ -1,0 +1,346 @@
+{
+  "competitors": [
+    {
+      "tracker_id": "1",
+      "name": "Gunnar Christensen",
+      "boat_name": "Pompoen",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:22Z",
+        "latitude": -17.1248,
+        "longitude": -31.0123
+      },
+      "color": "#FF3300",
+      "track_length": 1321,
+      "track_sha256": "89c322f4e5be4cb1dacc502ed4366f5d7e088c8957da2c25d92be0ed26698894"
+    },
+    {
+      "tracker_id": "2",
+      "name": "Louis Kerdelhue",
+      "boat_name": "IE Charge",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:01Z",
+        "latitude": -2.0774,
+        "longitude": -31.1098
+      },
+      "color": "#94FC6A",
+      "track_length": 1294,
+      "track_sha256": "093d494bd3d879a76b143b7954f7c681b30153feb3c45904a414632fd5dbb9f3"
+    },
+    {
+      "tracker_id": "3",
+      "name": "Guido Cantini",
+      "boat_name": "Hannah of Cowes",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:14Z",
+        "latitude": -21.3622,
+        "longitude": -28.0039
+      },
+      "color": "#FFFF00",
+      "track_length": 1038,
+      "track_sha256": "d1353d9b2af134e4874d92e57334f4c79c1f02c97f378ec6b82d3a6726b2c62a"
+    },
+    {
+      "tracker_id": "4",
+      "name": "Daniel Pinsky",
+      "boat_name": "Exodus",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:13Z",
+        "latitude": -24.259,
+        "longitude": -28.5831
+      },
+      "color": "#FF6600",
+      "track_length": 1019,
+      "track_sha256": "0d9e7c202df3230c1114820f7f0777c7f6ff2f3980a101c66e36d1e34d4b28aa"
+    },
+    {
+      "tracker_id": "5",
+      "name": "Guy deBoer",
+      "boat_name": "Spirit",
+      "status": "RACING",
+      "classes": [
+        "Chichester Class"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:05Z",
+        "latitude": 2.9158,
+        "longitude": -25.1955
+      },
+      "color": "#14FFFF",
+      "track_length": 1151,
+      "track_sha256": "14f34b531836d8ed6d9fe6cbffec87fddbae5d2096b50424f59d4326ed5c5791"
+    },
+    {
+      "tracker_id": "6",
+      "name": "Damien Guillou",
+      "boat_name": "Solarem",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:01Z",
+        "latitude": -40.8135,
+        "longitude": -18.5706
+      },
+      "color": "#00B0F0",
+      "track_length": 937,
+      "track_sha256": "eb5867a505c0dd5dc982c643f73f090bf775646c94e2315d50e2d34edd29f8a4"
+    },
+    {
+      "tracker_id": "8",
+      "name": "Selim Yalcin",
+      "boat_name": "Help Disabled Children",
+      "status": "RETIRED",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-09-29T00:00:24Z",
+        "latitude": 36.5803,
+        "longitude": -6.2562
+      },
+      "color": "#A6A6A6",
+      "track_length": 964,
+      "track_sha256": "19a944824cb43b6228d2b90edc6b7113a8af9a2aba5e36d322f99e914e70504c"
+    },
+    {
+      "tracker_id": "9",
+      "name": "Par Nyman",
+      "boat_name": "Lazy Otter",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:01Z",
+        "latitude": -17.8076,
+        "longitude": -28.7142
+      },
+      "color": "#C796FF",
+      "track_length": 828,
+      "track_sha256": "482783b2e90f1a03133abdd71878b1877401ed664b224fb799abc9e255d663e3"
+    },
+    {
+      "tracker_id": "10",
+      "name": "Pat Lawless",
+      "boat_name": "Silvermines Hydro",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:01Z",
+        "latitude": -28.282,
+        "longitude": -22.5075
+      },
+      "color": "#0E9E4D",
+      "track_length": 966,
+      "track_sha256": "8a4badb40d447f9281d34ff1914f81b2c8dc05ef3c29aab6ab63e8ead82b4ba3"
+    },
+    {
+      "tracker_id": "11",
+      "name": "Mara Lovenskiold Kveseth",
+      "boat_name": "Showgirl",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T00:00:54Z",
+        "latitude": -22.5249,
+        "longitude": -28.2584
+      },
+      "color": "#F21BC7",
+      "track_length": 1285,
+      "track_sha256": "caa67508bcb666d05767bbb68355e5df0e032117a9567a2c0608b1d9c8418004"
+    },
+    {
+      "tracker_id": "12",
+      "name": "Henry Wootton",
+      "boat_name": "Privateer",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:22Z",
+        "latitude": -20.888,
+        "longitude": -29.2463
+      },
+      "color": "#FFC000",
+      "track_length": 1018,
+      "track_sha256": "350f2540039402041f359333c4234c16d86df3f380fdca435fa06242715a0755"
+    },
+    {
+      "tracker_id": "13",
+      "name": "Etienne Messikommer",
+      "boat_name": "Bernard",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:24Z",
+        "latitude": -22.0909,
+        "longitude": -27.1015
+      },
+      "color": "#AF17FB",
+      "track_length": 1227,
+      "track_sha256": "83db22330652ebbb7640d3a39e2630b046f68eb2ac432923c112cbcc3f90dd2a"
+    },
+    {
+      "tracker_id": "14",
+      "name": "Isa Rosli",
+      "boat_name": "Olleanna",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:00Z",
+        "latitude": -19.7261,
+        "longitude": -28.6538
+      },
+      "color": "#FF0066",
+      "track_length": 1085,
+      "track_sha256": "bb1d81f7ab95eb7b176896496df5b058c363a06dcac4e751696e64719a953572"
+    },
+    {
+      "tracker_id": "15",
+      "name": "Matt Woodside",
+      "boat_name": "Tipi Haere",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:01:08Z",
+        "latitude": -18.5724,
+        "longitude": -29.9523
+      },
+      "color": "#00AAFF",
+      "track_length": 999,
+      "track_sha256": "161eefce004fa3def2094c34b6ed63c56fac2ca3992e1d7271adea2f8fb8ab35"
+    },
+    {
+      "tracker_id": "16",
+      "name": "Andrea Lodolo",
+      "boat_name": "BiBi",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:02:29Z",
+        "latitude": -25.9309,
+        "longitude": -23.1784
+      },
+      "color": "#FF0066",
+      "track_length": 1161,
+      "track_sha256": "8aaf20b421e570e2da6dc077d7275df1a27f84671eb0cf8d558f14dd58c6f288"
+    },
+    {
+      "tracker_id": "17",
+      "name": "Ertan Beskardes",
+      "boat_name": "Miss Beagle",
+      "status": "RACING",
+      "classes": [
+        "All Boats"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T04:00:01Z",
+        "latitude": -26.9614,
+        "longitude": -19.877
+      },
+      "color": "#66FFCC",
+      "track_length": 943,
+      "track_sha256": "e551eb23ededbd63b8991d23b46cbc39132ccd1355068b4bb219a8eb4bc984a3"
+    }
+  ],
+  "reference_boats": [
+    {
+      "tracker_id": "940",
+      "name": "Kirsten Neuschafer 2022 - 2023",
+      "boat_name": "Minnehaha",
+      "status": "RACING",
+      "classes": [
+        "Previous Competitors"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T06:30:01Z",
+        "latitude": -24.49599,
+        "longitude": -31.83539
+      },
+      "color": "#FFFFFF",
+      "track_length": 552,
+      "track_sha256": "f5d9c63a01b69ed16e72fded1a8f6599e25c52b0984bac004a1e2a8dac16a369"
+    },
+    {
+      "tracker_id": "985",
+      "name": "Bernard Moitessier 1968-1969",
+      "boat_name": null,
+      "status": "RACING",
+      "classes": [
+        "Previous Competitors"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-20T10:30:00Z",
+        "latitude": -26.03052,
+        "longitude": -17.48175
+      },
+      "color": "#FFFFFF",
+      "track_length": 33,
+      "track_sha256": "3a8b849ba52d34ef0b99a302a160c567e961c575a3a0fa75b9df00ed49e39de9"
+    },
+    {
+      "tracker_id": "957",
+      "name": "Sir Robin Knox-Johnston 1968-1969",
+      "boat_name": null,
+      "status": "RACING",
+      "classes": [
+        "Previous Competitors"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-18T10:30:00Z",
+        "latitude": 1,
+        "longitude": -20
+      },
+      "color": "#FFFFFF",
+      "track_length": 8,
+      "track_sha256": "0b4f63d8f2bea97df22c35568353950d6c9a0b2ca4bef69d1713d6800c716c39"
+    },
+    {
+      "tracker_id": "978",
+      "name": "Jean-Luc Van Den Heede 2018 - 2019",
+      "boat_name": null,
+      "status": "RACING",
+      "classes": [
+        "Previous Competitors"
+      ],
+      "latest_position": {
+        "timestamp": "2026-10-21T06:30:01Z",
+        "latitude": -29.19276,
+        "longitude": -0.18703
+      },
+      "color": "#FFFFFF",
+      "track_length": 326,
+      "track_sha256": "14c3147cbb00592382dbd80bf8def487f08103afc86c13d90dcb5923bc0e5549"
+    }
+  ]
+}

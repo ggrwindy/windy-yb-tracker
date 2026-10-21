@@ -1,0 +1,26 @@
+{
+  "name": "windy-plugin-ggr2026",
+  "version": "0.3.2",
+  "private": true,
+  "main": "dist/plugin.min.js",
+  "description": "GGR 2026 boats and historical tracks on Windy",
+  "type": "module",
+  "scripts": {
+    "build": "SERVE=false rollup -c",
+    "start": "npm run build && node scripts/dev-server.mjs",
+    "dev": "SERVE=false rollup -c -w",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "deploy:prepare": "npm run check && npm run build && npm test && node scripts/publish.mjs --prepare",
+    "deploy": "npm run check && npm run build && npm test && node scripts/publish.mjs"
+  },
+  "devDependencies": {
+    "@windycom/plugin-devtools": "3.0.3",
+    "jsdom": "^27.4.0",
+    "svelte": "4.2.20",
+    "svelte-check": "^3.8.6"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}
