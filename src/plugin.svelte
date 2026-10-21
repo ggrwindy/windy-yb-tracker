@@ -216,7 +216,8 @@
 <style>
     :global(#plugin-windy-plugin-ggr2026) { width: 354px !important; height: auto !important; max-height: none !important; padding: 0 !important; margin-top: 40px !important; max-width: calc(100vw - 16px); }
     :global(#plugin-windy-plugin-ggr2026 > .closing-x) { top: 14px !important; right: 12px !important; width: 28px; height: 28px; margin: 0 !important; display: grid; place-items: center; border: 1px solid #597381; border-radius: 5px; background: #263e4c; color: #eaf0f2; }
-    :global(#plugin-windy-plugin-ggr2026 > .closing-x::before) { content: '×'; font: 22px/1 system-ui, sans-serif; }
+    :global(#plugin-windy-plugin-ggr2026 > .closing-x::before), :global(#plugin-windy-plugin-ggr2026 > .closing-x::after) { content: ''; position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; margin: 0; border-radius: 1px; background: currentColor; transform: translate(-50%, -50%) rotate(45deg); }
+    :global(#plugin-windy-plugin-ggr2026 > .closing-x::after) { transform: translate(-50%, -50%) rotate(-45deg); }
     :global(#plugin-windy-plugin-ggr2026 > .closing-x:hover) { background: #385768; }
     /* Leave room for Windy's weather menu and bottom controls in its flex column. */
     .ggr-panel { width: 100%; box-sizing: border-box; max-height: calc(100dvh - 350px); display: flex; flex-direction: column; color: #eaf0f2; font: 13px/1.45 system-ui, sans-serif; background: #132834f2; border: 1px solid #456170; border-radius: 12px; box-shadow: 0 8px 30px #0005; overflow-x: hidden; overflow-y: auto; }

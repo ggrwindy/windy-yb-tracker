@@ -11,12 +11,12 @@ This project was built using AI, with OpenAI Codex used for implementation, test
 3. Paste this URL and choose **Install untrusted plugin**:
 
    ```text
-   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.3/plugin.min.js
+   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.4/plugin.min.js
    ```
 
 4. Open **Golden Globe Race 2026** from Windy's menu, or use [the installed tracker link](https://www.windy.com/plugin/ggr2026).
 
-This is an unlisted, private plugin hosted by Windy. No local server is needed. Source and the release archive are available in [GitHub release v0.3.3](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.3).
+This is an unlisted, private plugin hosted by Windy. No local server is needed. Source and the release archive are available in [GitHub release v0.3.4](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.4).
 
 ## Local development
 
