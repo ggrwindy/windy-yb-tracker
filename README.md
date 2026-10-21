@@ -6,7 +6,7 @@ This project was built using AI, with OpenAI Codex used for implementation, test
 
 ## Install the published plugin
 
-Gallery review is pending. Until Windy approves the listing, install the published public release directly:
+The gallery review request has been submitted as `goldsmith065` and is queued for forum moderation. Gallery approval is pending. Until Windy approves the listing, install the published public release directly:
 
 1. Open [Windy Plugins](https://www.windy.com/plugins).
 2. Choose **Load plugin directly from URL**.
@@ -68,7 +68,7 @@ Deployment uploads the static bundle and gallery screenshot to Windy with `priva
 
 Publishing requires Git and `tar`.
 
-1. Sign into [Windy API keys](https://api.windy.com/keys) using the separate developer account. Create a **Windy Plugins API** key; Map Forecast keys do not publish plugins.
+1. Sign into [Windy API keys](https://api.windy.com/keys) as `goldsmith065`. Use that account’s **Windy Plugins API** key; Map Forecast keys do not publish plugins. The Windy publishing account is `goldsmith065`; the GitHub repository account is `ggrwindy`.
 2. Use the release repository [ggrwindy/windyggr](https://github.com/ggrwindy/windyggr), authenticated as `ggrwindy`. Commit and push this source, then create a release matching the version in `src/pluginConfig.ts` and `package.json`.
 3. Copy `.windy-publish.env.example` to `.windy-publish.env`. Fill in `WINDY_API_KEY` and the repository HTTPS URL in `WINDY_REPOSITORY`. This local file is ignored by Git; keep it out of chat and source control.
 
@@ -88,7 +88,7 @@ The command prints the hosted installation URL and saves a receipt in `dist/publ
 
 ### Gallery review
 
-After the first public release is uploaded, post its hosted installation URL and source repository in [Windy’s finished plugins thread](https://community.windy.com/topic/31066/list-of-finished-windy-plugins-v42), asking staff to review and add it to the gallery. Use the `ggrwindy` developer account. Include a short feature summary and the disclosure that it was built using AI and OpenAI Codex. Setting `private: false` makes a release eligible; it does not grant approval automatically.
+After the first public release is uploaded, post its hosted installation URL and source repository in [Windy’s finished plugins thread](https://community.windy.com/topic/31066/list-of-finished-windy-plugins-v42), asking staff to review and add it to the gallery. Use the Windy account `goldsmith065`. Include a short feature summary and the disclosure that it was built using AI and OpenAI Codex. New forum users’ posts may be queued for moderation before staff can review the plugin. Setting `private: false` makes a release eligible; it does not grant approval automatically.
 
 Keep the gallery screenshot current when the interface changes. Once approved, update the installation instructions above to lead with the gallery installation.
 
