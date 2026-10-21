@@ -2,6 +2,20 @@
 
 Competitor positions and historical tracks over Windy weather maps. The plugin fetches directly from the public tracker; no backend or database is required.
 
+## Install the published plugin
+
+1. Open [Windy Plugins](https://www.windy.com/plugins).
+2. Choose **Load plugin directly from URL**.
+3. Paste this URL and choose **Install untrusted plugin**:
+
+   ```text
+   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.2/plugin.min.js
+   ```
+
+4. Open **Golden Globe Race 2026** from Windy's menu, or use [the installed tracker link](https://www.windy.com/plugin/ggr2026).
+
+This is an unlisted, private plugin hosted by Windy. No local server is needed. Source and the release archive are available in [GitHub release v0.3.2](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.2).
+
 ## Local development
 
 Requires Node.js 22.18 or later.
@@ -66,6 +80,6 @@ npm run deploy         # repeats validation, uploads to Windy, and verifies the 
 
 The uploader uses the actual Git commit and repository metadata. It requires a clean working tree and packages only the three plugin files, with neutral archive ownership. It sends the API key only to Windy's official upload endpoint; the key is never embedded in the bundle.
 
-The command prints the hosted installation URL and saves a receipt in `dist/publish-result.json`. Install that hosted URL in Windy and confirm positions, tracks and favorites still work after a full reload with the local development server stopped.
+The command prints the hosted installation URL and saves a receipt in `dist/publish-result.json`. Attach the resulting `dist/plugin.tar` to the matching GitHub release so its asset is the exact uploaded archive. Update the installation URL above for the new version. Install through Windy Plugins and confirm positions, tracks and favorites still work after a full reload with the local development server stopped.
 
 See [Windy's official publishing guide](https://docs.windy-plugins.com/getting-started/publishing-plugin.html) for account setup and gallery review.
