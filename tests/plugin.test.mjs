@@ -7,6 +7,8 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
     const entrantCount = race.competitors.filter(boat => boat.latest_position).length;
     const totalCount = entrantCount + race.reference_boats.filter(boat => boat.latest_position).length;
     const sample = race.competitors.find(boat => boat.latest_position);
+    const activeFleet = race.competitors.filter(boat => boat.latest_position && boat.status !== 'RETIRED');
+    const fleetPoints = boats => boats.map(boat => [boat.latest_position.latitude, boat.latest_position.longitude]);
     const dom = new JSDOM('<main></main>', { url: 'https://www.windy.com' });
     const keys = ['window', 'document', 'navigator', 'localStorage', 'HTMLElement', 'Element', 'CustomEvent'];
     const originals = new Map(keys.map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
@@ -73,6 +75,7 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
         assert.equal(document.querySelectorAll('a, form, input[type=url]').length, 0);
         assert.equal([...layers].filter(l => l instanceof Marker).length, entrantCount);
         assert.equal(map.fitBoundsCalls.length, 1);
+        assert.deepEqual(map.fitBoundsCalls.at(-1), fleetPoints(activeFleet), 'initial fit excludes retired competitors');
         assert.ok(document.body.textContent.includes(`${entrantCount} boats on map`));
 
         const favorite = race.competitors.find(boat => boat.tracker_id !== sample.tracker_id && boat.latest_position);
@@ -100,10 +103,15 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
         const reference = [...document.querySelectorAll('label')].find(label => label.textContent.includes('Reference boats')).querySelector('input');
         reference.checked = true; change(reference); await settle();
         assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount);
+        const fitFleet = [...document.querySelectorAll('button')].find(button => button.textContent === 'Fit fleet');
+        click(fitFleet); await settle();
+        assert.deepEqual(map.fitBoundsCalls.at(-1), fleetPoints(activeFleet), 'visible reference boats do not change fleet bounds');
 
         const skipper = [...document.querySelectorAll('input[type=checkbox]')].find(input => input.getAttribute('aria-label') === `Show ${sample.name}`);
         skipper.checked = false; change(skipper); await settle();
         assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount - 1);
+        click(fitFleet); await settle();
+        assert.deepEqual(map.fitBoundsCalls.at(-1), fleetPoints(activeFleet.filter(boat => boat.tracker_id !== sample.tracker_id)), 'hidden active boats are excluded');
         click(skipper.closest('.boat').querySelector('button')); await settle();
         assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount);
         assert.deepEqual(map.panToCalls.at(-1), [sample.latest_position.latitude, sample.latest_position.longitude]);
@@ -133,6 +141,12 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
         click(outside); await settle();
         assert.equal(openPopups.size, 0, 'repeated outside dismissal also works');
         outside.remove();
+
+        click([...document.querySelectorAll('button')].find(button => button.textContent === 'None')); await settle();
+        const fitCount = map.fitBoundsCalls.length;
+        click(fitFleet); await settle();
+        assert.equal(map.fitBoundsCalls.length, fitCount, 'an empty fleet leaves the map bounds unchanged');
+        click([...document.querySelectorAll('button')].find(button => button.textContent === 'All')); await settle();
 
         for (let minute = 0; minute < 10; minute++) tick();
         await settle();

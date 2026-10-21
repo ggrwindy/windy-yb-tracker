@@ -11,12 +11,12 @@ This project was built using AI, with OpenAI Codex used for implementation, test
 3. Paste this URL and choose **Install untrusted plugin**:
 
    ```text
-   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.2/plugin.min.js
+   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.3/plugin.min.js
    ```
 
 4. Open **Golden Globe Race 2026** from Windy's menu, or use [the installed tracker link](https://www.windy.com/plugin/ggr2026).
 
-This is an unlisted, private plugin hosted by Windy. No local server is needed. Source and the release archive are available in [GitHub release v0.3.2](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.2).
+This is an unlisted, private plugin hosted by Windy. No local server is needed. Source and the release archive are available in [GitHub release v0.3.3](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.3).
 
 ## Local development
 
@@ -41,7 +41,7 @@ npm test       # run the offline regression tests after building
 ## Controls
 
 - Star a skipper to move them to the top and emphasize their boat and track.
-- Toggle boats individually, search, or use All/None and Fit fleet.
+- Toggle boats individually, search, or use All/None. Fit fleet frames selected competitors, excluding reference and retired boats.
 - Choose full tracks, seven days, 24 hours, or tracks off.
 - Enable reference boats to show previous-race tracks.
 - Click a boat or skipper for GPS coordinates, time and average navigation details. Click outside the popup to dismiss it.

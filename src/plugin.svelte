@@ -148,7 +148,9 @@
     }
 
     function fitFleet() {
-        const points: [number, number][] = visibleBoats.map(boat => [boat.latest_position!.latitude, boat.latest_position!.longitude]);
+        const points: [number, number][] = (race?.competitors || [])
+            .filter(boat => enabled[boat.tracker_id] !== false && boat.status !== 'RETIRED' && boat.latest_position)
+            .map(boat => [boat.latest_position!.latitude, boat.latest_position!.longitude]);
         if (points.length) map.fitBounds(points, { padding: [55, 55], maxZoom: 7 });
     }
 
