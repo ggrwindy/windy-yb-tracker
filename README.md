@@ -2,6 +2,8 @@
 
 Competitor positions and historical tracks over Windy weather maps. The plugin fetches directly from the public tracker; no backend or database is required.
 
+This project was built using AI, with OpenAI Codex used for implementation, testing, and documentation.
+
 ## Install the published plugin
 
 1. Open [Windy Plugins](https://www.windy.com/plugins).
