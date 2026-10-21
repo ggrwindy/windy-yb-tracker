@@ -4,9 +4,11 @@ Competitor positions and historical tracks over Windy weather maps. The plugin f
 
 This project was built using AI, with OpenAI Codex used for implementation, testing, and documentation.
 
+![Golden Globe Race 2026 tracker showing boats, historical tracks and skipper controls on Windy](src/screenshot.jpg)
+
 ## Install the published plugin
 
-The gallery review request has been submitted as `goldsmith065` and is queued for forum moderation. Gallery approval is pending. Until Windy approves the listing, install the published public release directly:
+The [gallery review request](https://community.windy.com/post/234182) has been published as `goldsmith065`. Gallery approval is pending. Until Windy approves the listing, install the published public release directly:
 
 1. Open [Windy Plugins](https://www.windy.com/plugins).
 2. Choose **Load plugin directly from URL**.
