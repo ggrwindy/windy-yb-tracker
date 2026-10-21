@@ -63,7 +63,7 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
     let app;
     try {
         const { default: Plugin, __pluginConfig } = await import('../dist/plugin.js');
-        assert.equal(__pluginConfig.private, true);
+        assert.equal(__pluginConfig.private, false);
         assert.equal(__pluginConfig.author, 'GGR tracker');
         app = new Plugin({ target: document.querySelector('main') });
         await settle();

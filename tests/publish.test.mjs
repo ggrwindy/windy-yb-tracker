@@ -10,7 +10,7 @@ async function project(t) {
     const root = await mkdtemp(join(tmpdir(), 'ggr-publish-test-'));
     t.after(() => rm(root, { recursive: true, force: true }));
     await mkdir(join(root, 'dist'));
-    const config = { name: 'windy-plugin-ggr2026', version: '0.3.2', private: true, author: 'GGR tracker' };
+    const config = { name: 'windy-plugin-ggr2026', version: '0.3.5', private: false, author: 'GGR tracker', screenshot: 'screenshot.jpg' };
     await writeFile(join(root, 'package.json'), JSON.stringify(config));
     await writeFile(join(root, 'source.js'), 'export const release = true;\n');
     await writeFile(join(root, '.gitignore'), 'dist/\n.windy-publish.env\n');
@@ -18,6 +18,7 @@ async function project(t) {
     await writeFile(join(root, 'dist/plugin.json'), JSON.stringify(config));
     await writeFile(join(root, 'dist/plugin.js'), 'export default "plugin";\n');
     await writeFile(join(root, 'dist/plugin.min.js'), 'export default"plugin";');
+    await writeFile(join(root, 'dist/screenshot.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
     const git = args => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
     git(['init', '--quiet']); git(['add', '.']);
     git(['-c', 'user.name=Release Test', '-c', 'user.email=release-test@example.invalid', 'commit', '--quiet', '-m', 'Test release']);
@@ -42,22 +43,29 @@ test('release archive contains only plugin files, real Git metadata and neutral 
     const release = await prepareRelease(root, 'https://github.com/anonymous-sailor/ggr-plugin.git');
     const bytes = await readFile(release.archive);
     const entries = unpack(bytes);
-    assert.deepEqual(entries.map(entry => entry.name), ['plugin.js', 'plugin.min.js', 'plugin.json']);
+    assert.deepEqual(entries.map(entry => entry.name), ['plugin.js', 'plugin.min.js', 'plugin.json', 'screenshot.jpg']);
+    assert.deepEqual(entries[3].body, await readFile(join(root, 'dist/screenshot.jpg')));
     assert.ok(entries.every(entry => entry.uid === 0 && entry.gid === 0 && !entry.user && !entry.group));
     assert.ok(!bytes.includes(Buffer.from('TEST_PRIVATE_KEY_NEVER_PACKAGE')));
     const config = JSON.parse(entries[2].body);
     assert.equal(config.repositoryOwner, 'anonymous-sailor');
     assert.equal(config.repositoryName, 'https://github.com/anonymous-sailor/ggr-plugin');
     assert.equal(config.commitSha, git(['rev-parse', 'HEAD']));
-    assert.equal(config.private, true);
+    assert.equal(config.private, false);
+    assert.equal(config.screenshot, 'screenshot.jpg');
 });
 
 test('publishing refuses uncommitted source, mismatched versions and missing repository metadata', async t => {
     const { root, config } = await project(t);
     const repo = 'https://github.com/anonymous-sailor/ggr-plugin';
     await assert.rejects(prepareRelease(root, ''), /WINDY_REPOSITORY/);
-    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, version: '0.3.3' }));
+    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, version: '0.3.6' }));
     await assert.rejects(prepareRelease(root, repo), /versions must match/);
+    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, private: true }));
+    await assert.rejects(prepareRelease(root, repo), /expects public distribution/);
+    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, screenshot: '../secret.jpg' }));
+    await assert.rejects(prepareRelease(root, repo), /gallery screenshot/);
+    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify(config));
     await writeFile(join(root, 'source.js'), 'uncommitted change');
     await assert.rejects(prepareRelease(root, repo), /Commit the current source/);
 });
@@ -65,7 +73,7 @@ test('publishing refuses uncommitted source, mismatched versions and missing rep
 test('upload sends the key only to the official endpoint and verifies the hosted bytes', async t => {
     const { root } = await project(t);
     const release = await prepareRelease(root, 'https://github.com/anonymous-sailor/ggr-plugin');
-    const url = 'https://windy-plugins.com/42/windy-plugin-ggr2026/0.3.2/plugin.min.js';
+    const url = 'https://windy-plugins.com/42/windy-plugin-ggr2026/0.3.5/plugin.min.js';
     const key = 'TEST_PLUGIN_KEY';
     let requests = 0;
     const request = async (target, options) => {
