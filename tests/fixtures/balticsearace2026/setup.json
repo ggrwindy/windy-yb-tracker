@@ -1,0 +1,378 @@
+{
+  "title": "RORC Baltic Sea Race 2026",
+  "tags": [
+    {
+      "id": 84126,
+      "name": "Line Honours Monohull"
+    },
+    {
+      "id": 84127,
+      "name": "Line Honours Multihull"
+    },
+    {
+      "id": 84128,
+      "name": "IRC Overall"
+    },
+    {
+      "id": 84129,
+      "name": "IRC One"
+    },
+    {
+      "id": 84130,
+      "name": "IRC Two"
+    },
+    {
+      "id": 84131,
+      "name": "IRC Two-Handed"
+    },
+    {
+      "id": 84132,
+      "name": "FinRating"
+    },
+    {
+      "id": 84133,
+      "name": "FinRating 2"
+    },
+    {
+      "id": 84134,
+      "name": "FinRating 1"
+    },
+    {
+      "id": 84136,
+      "name": "Multihull"
+    },
+    {
+      "id": 84137,
+      "name": "Yb3i"
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "name": "AMAZIGH",
+      "owner": "Andreas Hamrin",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84131,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 2,
+      "name": "BEDOUIN",
+      "owner": "Linda Goddard",
+      "status": "RACING",
+      "colour": "3333CC",
+      "tags": [
+        84126,
+        84128,
+        84129
+      ]
+    },
+    {
+      "id": 3,
+      "name": "BELMONT",
+      "owner": "Stefan Wiklund",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 4,
+      "name": "BIANCO",
+      "owner": "Tuomas Riski",
+      "status": "RACING",
+      "colour": "FF0066",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84131,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 5,
+      "name": "BLACK PEARL",
+      "owner": "Mikko Lehtojoki & Jasu Viding",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 7,
+      "name": "CAP",
+      "owner": "Mikael Stamming",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129
+      ]
+    },
+    {
+      "id": 8,
+      "name": "C-ME",
+      "owner": "Hakan Gronvall",
+      "status": "RACING",
+      "colour": "94FC6A",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 9,
+      "name": "INFERNA",
+      "owner": "Arttu Hult",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 10,
+      "name": "IRIE",
+      "owner": "Sanna Moliis & Julius Haartti",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84131,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 11,
+      "name": "JOLENE",
+      "owner": "Fredrik Rydin",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84131,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 12,
+      "name": "KIND OF MAGIC",
+      "owner": "Ilmari Absetz",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 13,
+      "name": "MAXCITING",
+      "owner": "Nicklas Fuchs",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 14,
+      "name": "MOANA",
+      "owner": "Hanno Ziehm",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84137
+      ]
+    },
+    {
+      "id": 15,
+      "name": "NICA",
+      "owner": "Gorm",
+      "status": "RACING",
+      "colour": "FFCCFF",
+      "tags": [
+        84127,
+        84136,
+        84137
+      ]
+    },
+    {
+      "id": 16,
+      "name": "PARLAN",
+      "owner": "Kai Vuorilehto",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 17,
+      "name": "RAINDANCE MAGGIE",
+      "owner": "Andrej Svensson & Casimir Svensson",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 18,
+      "name": "RUSH",
+      "owner": "Jori Lahtonen",
+      "status": "RACING",
+      "colour": "FF3300",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 19,
+      "name": "SCHLUSSEL VON BREMEN",
+      "owner": "Segelkameradschaft \"Das Wappen Von Bremen\"",
+      "status": "RACING",
+      "colour": "00CC66",
+      "tags": [
+        84126,
+        84128,
+        84129
+      ]
+    },
+    {
+      "id": 20,
+      "name": "SELENE",
+      "owner": "Riku Lehto",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 21,
+      "name": "SPIRIT",
+      "owner": "Louise Edgren / Anders Lundmark",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84131,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 22,
+      "name": "STORA BLA",
+      "owner": "Niklas Jansson",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129
+      ]
+    },
+    {
+      "id": 23,
+      "name": "TEAM MOBLINE",
+      "owner": "Par Lindfors / Nadine Kugel",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84131,
+        84132,
+        84133
+      ]
+    },
+    {
+      "id": 24,
+      "name": "TEGU",
+      "owner": "Janne Westerlund",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84129,
+        84132,
+        84134
+      ]
+    },
+    {
+      "id": 6,
+      "name": "BLUR",
+      "owner": "Peter Gustafsson",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        84126,
+        84128,
+        84130,
+        84131,
+        84132
+      ]
+    }
+  ]
+}

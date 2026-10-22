@@ -1,9 +1,9 @@
 {
-  "name": "windy-plugin-ggr2026",
-  "version": "0.3.5",
+  "name": "windy-plugin-yb-tracker",
+  "version": "0.1.0",
   "private": true,
   "main": "dist/plugin.min.js",
-  "description": "GGR 2026 boats and historical tracks on Windy",
+  "description": "Experimental multi-race YB tracker on Windy",
   "type": "module",
   "scripts": {
     "build": "SERVE=false rollup -c",

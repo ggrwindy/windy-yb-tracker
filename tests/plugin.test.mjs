@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setup, binary, expected as race } from './fixtures.mjs';
 import { JSDOM } from 'jsdom';
+import { readFileSync } from 'node:fs';
 
 test('compiled plugin loads boats, filters tracks, refreshes safely and removes every map layer on close', async () => {
     const entrantCount = race.competitors.filter(boat => boat.latest_position).length;
@@ -40,6 +41,15 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
     globalThis.L = { Marker, Polyline, Popup, divIcon: options => options };
     globalThis.W = { map: { map } };
     const originalFetch = globalThis.fetch;
+    const datasets = new Map([['ggr2026', { setup, binary }]]);
+    for (const code of ['balticsearace2026', 'paccup2026']) {
+        const read = name => readFileSync(new URL(`./fixtures/${code}/${name}`, import.meta.url));
+        const b = read('positions.bin');
+        datasets.set(code, { setup: JSON.parse(read('setup.json')), binary: b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) });
+    }
+    let slowResolvers = [];
+    let slowSignals = [];
+    localStorage.setItem('ggr2026-tracker-v1', 'original-plugin-settings');
     let fail = false;
     let fetches = 0;
     const originalSetInterval = globalThis.setInterval;
@@ -49,12 +59,19 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
     globalThis.setInterval = callback => { tick = callback; return 42; };
     globalThis.clearInterval = id => { if (id === 42) timerCleared = true; };
     const urls = [];
-    globalThis.fetch = async url => {
+    globalThis.fetch = async (url, options) => {
         fetches++;
         urls.push(url);
         if (fail) throw new Error('Test server unavailable');
-        if (url.includes('/JSON/')) return { ok: true, json: async () => structuredClone(setup) };
-        if (url.includes('/BIN/')) return { ok: true, arrayBuffer: async () => binary.slice(0) };
+        const code = new URL(url).pathname.split('/')[2];
+        if (code === 'slow2026') {
+            slowSignals.push(options.signal);
+            await new Promise(resolve => slowResolvers.push(resolve)); // Deliberately ignores cancellation.
+        }
+        const data = datasets.get(code === 'slow2026' ? 'ggr2026' : code);
+        if (!data) return { ok: false, status: 503 };
+        if (url.includes('/JSON/')) return { ok: true, json: async () => structuredClone(data.setup) };
+        if (url.includes('/BIN/')) return { ok: true, arrayBuffer: async () => data.binary.slice(0) };
         assert.fail('Unexpected data URL: ' + url);
     };
     const settle = () => new Promise(resolve => setImmediate(resolve));
@@ -63,20 +80,20 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
     let app;
     try {
         const { default: Plugin, __pluginConfig } = await import('../dist/plugin.js');
-        assert.equal(__pluginConfig.private, false);
+        assert.equal(__pluginConfig.private, true);
         assert.equal(__pluginConfig.author, 'GGR tracker');
         app = new Plugin({ target: document.querySelector('main') });
         await settle();
         assert.equal(fetches, 2);
         assert.ok(urls.every(url => url.startsWith('https://cf.yb.tl/')));
         assert.match(document.body.textContent, /Updated/);
-        assert.doesNotMatch(document.body.textContent, /YB|Data source|Custom JSON|Connect/i);
+        assert.doesNotMatch(document.body.textContent, /Data source|Custom JSON|Connect/i);
         assert.equal(document.querySelectorAll('select').length, 1);
-        assert.equal(document.querySelectorAll('a, form, input[type=url]').length, 0);
+        assert.equal(document.querySelectorAll('form').length, 1);
         assert.equal([...layers].filter(l => l instanceof Marker).length, entrantCount);
         assert.equal(map.fitBoundsCalls.length, 1);
         assert.deepEqual(map.fitBoundsCalls.at(-1), fleetPoints(activeFleet), 'initial fit excludes retired competitors');
-        assert.ok(document.body.textContent.includes(`${entrantCount} boats on map`));
+        assert.ok(document.body.textContent.includes(`${entrantCount} teams on map`));
 
         const favorite = race.competitors.find(boat => boat.tracker_id !== sample.tracker_id && boat.latest_position);
         const favoriteButton = () => [...document.querySelectorAll('.favorite-toggle')].find(button => button.getAttribute('aria-label') === `Favorite ${favorite.name}`);
@@ -163,8 +180,8 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
         assert.equal(fetches, 6);
         assert.match(document.querySelector('[role="alert"]').textContent, /Showing the last successful load/);
         assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount);
-        assert.ok(localStorage.getItem('ggr2026-tracker-v1'));
-        const saved = JSON.parse(localStorage.getItem('ggr2026-tracker-v1'));
+        assert.ok(localStorage.getItem('yb-race-tracker-v1:ggr2026'));
+        const saved = JSON.parse(localStorage.getItem('yb-race-tracker-v1:ggr2026'));
         assert.equal(saved.endpoint, undefined);
         assert.equal(saved.dataSource, undefined);
         assert.equal(saved.favorites[favorite.tracker_id], true);
@@ -180,6 +197,62 @@ test('compiled plugin loads boats, filters tracks, refreshes safely and removes 
         assert.equal(document.querySelector('.boat .boat-name').textContent, favorite.name, 'favorites survive reopening');
         assert.equal(favoriteButton().getAttribute('aria-pressed'), 'true');
         assert.deepEqual(favoriteMarker().options.icon.iconSize, [38, 38]);
+        const loadRace = async value => {
+            const input = document.querySelector('#yb-race-input');
+            input.value = value;
+            input.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+            document.querySelector('.race-picker').dispatchEvent(new dom.window.Event('submit', { bubbles: true, cancelable: true }));
+            await settle();
+        };
+        await loadRace('balticsearace2026');
+        assert.equal(document.querySelector('h2').textContent, 'RORC Baltic Sea Race 2026');
+        assert.equal([...layers].filter(l => l instanceof Marker).length, 23);
+        assert.ok([...document.querySelectorAll('.favorite-toggle')].every(b => b.getAttribute('aria-pressed') === 'false'), 'favorites never leak across races with overlapping IDs');
+        assert.equal(document.querySelector('.auto input').checked, true);
+        const balticFavorite = document.querySelector('.favorite-toggle');
+        click(balticFavorite); await settle();
+        const balticName = document.querySelector('.boat .boat-name').textContent;
+        document.querySelector('select').value = '24'; change(document.querySelector('select')); await settle();
+        const balticSetup = datasets.get('balticsearace2026').setup;
+        assert.equal(map.fitBoundsCalls.at(-1).length, balticSetup.teams.filter(t => t.status !== 'RETIRED').length, 'new-race fit excludes retired teams');
+        await loadRace('https://yb.tl/paccup2026');
+        assert.equal(document.querySelector('h2').textContent, 'Pacific Cup');
+        assert.equal([...layers].filter(l => l instanceof Marker).length, 49);
+        assert.ok([...document.querySelectorAll('.favorite-toggle')].every(b => b.getAttribute('aria-pressed') === 'false'));
+        await loadRace('ggr2026');
+        assert.equal(favoriteButton().getAttribute('aria-pressed'), 'true');
+        assert.equal(document.querySelector('select').value, 'none');
+        assert.equal(document.querySelector('.auto input').checked, false);
+        assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount);
+        await loadRace('missing2026');
+        assert.match(document.querySelector('[role=alert]').textContent, /missing2026.*HTTP 503.*Showing the last successful load/);
+        assert.equal(document.querySelector('h2').textContent, setup.title);
+        assert.equal([...layers].filter(l => l instanceof Marker).length, totalCount);
+        assert.equal(localStorage.getItem('yb-race-tracker:last-race'), 'ggr2026', 'failed selection does not replace saved race');
+        const beforeInvalid = fetches;
+        await loadRace('https://evil.example/race');
+        assert.equal(fetches, beforeInvalid, 'invalid host causes no request');
+        await loadRace('slow2026');
+        assert.equal(slowResolvers.length, 2);
+        await loadRace('balticsearace2026');
+        assert.ok(slowSignals.every(signal => signal.aborted));
+        slowResolvers.forEach(resolve => resolve()); slowResolvers = []; await settle(); await settle();
+        assert.equal(document.querySelector('h2').textContent, 'RORC Baltic Sea Race 2026', 'late superseded response cannot overwrite active race');
+        assert.equal(document.querySelector('.boat .boat-name').textContent, balticName);
+        assert.equal(document.querySelector('select').value, '24');
+        assert.equal(localStorage.getItem('ggr2026-tracker-v1'), 'original-plugin-settings', 'the GGR-only plugin keeps its own preferences');
+        await loadRace('slow2026');
+        const duringPending = fetches;
+        for (let minute = 0; minute < 10; minute++) tick();
+        await settle();
+        assert.equal(fetches, duringPending, 'auto refresh does not cancel an in-progress race selection');
+        app.$destroy(); app = null;
+        assert.equal(layers.size, 0);
+        slowResolvers.forEach(resolve => resolve()); slowResolvers = []; await settle(); await settle();
+        assert.equal(document.querySelector('main').children.length, 0, 'late response cannot revive a closed plugin');
+        app = new Plugin({ target: document.querySelector('main') }); await settle();
+        assert.equal(document.querySelector('h2').textContent, 'RORC Baltic Sea Race 2026', 'last successful race survives reopening');
+        assert.equal(document.querySelector('.boat .boat-name').textContent, balticName);
         app.$destroy(); app = null;
         assert.equal(layers.size, 0);
     } finally {

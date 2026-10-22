@@ -1,9 +1,32 @@
 import type { Boat, Position, Race } from './race';
 
-export const YB_ENDPOINTS = {
-    setup: 'https://cf.yb.tl/JSON/ggr2026/RaceSetup',
-    history: 'https://cf.yb.tl/BIN/ggr2026/AllPositions3',
-} as const;
+export const DEFAULT_RACE = 'ggr2026';
+export const EXAMPLE_RACES = [
+    { code: 'ggr2026', title: 'Golden Globe Race 2026' },
+    { code: 'balticsearace2026', title: 'RORC Baltic Sea Race 2026' },
+    { code: 'paccup2026', title: 'Pacific Cup' },
+];
+
+/** Accept public YB race links or codes; fetch only from the fixed YB host. */
+export function parseRaceCode(input: string): string {
+    let code = input.trim();
+    if (/^https?:\/\//i.test(code)) {
+        const url = new URL(code);
+        if (url.protocol !== 'https:' || !['yb.tl', 'www.yb.tl', 'cf.yb.tl'].includes(url.hostname) ||
+            url.username || url.password || url.port) throw new Error('Use an HTTPS yb.tl race link or a race code.');
+        const parts = url.pathname.split('/').filter(Boolean);
+        if (parts.length === 2 && /^(simple|leaderboard|links)$/i.test(parts[0])) parts.shift();
+        if (parts.length !== 1) throw new Error('Use a YB race link such as https://yb.tl/ggr2026.');
+        code = parts[0];
+    }
+    if (!/^[a-z0-9][a-z0-9_-]{0,79}$/i.test(code)) throw new Error('Enter a valid YB race code or HTTPS yb.tl race link.');
+    return code.toLowerCase();
+}
+
+export function ybEndpoints(input: string) {
+    const code = parseRaceCode(input);
+    return { setup: `https://cf.yb.tl/JSON/${code}/RaceSetup`, history: `https://cf.yb.tl/BIN/${code}/AllPositions3` };
+}
 
 interface Team {
     id: number;
@@ -17,7 +40,7 @@ interface Team {
 interface Setup {
     title: string;
     teams: Team[];
-    tags: { id: number; name: string }[];
+    tags?: { id: number; name: string }[];
 }
 
 /** Decode the public tracker's big-endian absolute and backward-delta fixes. */
@@ -68,12 +91,13 @@ export function decodePositions(data: ArrayBuffer): Map<number, Position[]> {
     return teams;
 }
 
-export function normalizeYb(value: unknown, positions: Map<number, Position[]>): Race {
+export function normalizeYb(value: unknown, positions: Map<number, Position[]>, raceCode: string): Race {
+    const code = parseRaceCode(raceCode);
     const setup = value as Setup;
-    if (!setup || typeof setup.title !== 'string' || !Array.isArray(setup.teams) || !Array.isArray(setup.tags)) {
+    if (!setup || typeof setup.title !== 'string' || !setup.title.trim() || !Array.isArray(setup.teams) || (setup.tags !== undefined && !Array.isArray(setup.tags))) {
         throw new Error('Invalid race metadata.');
     }
-    const tags = new Map(setup.tags.map(tag => [tag.id, tag.name]));
+    const tags = new Map((setup.tags || []).map(tag => [tag.id, tag.name]));
     const ids = new Set<number>();
     const competitors: Boat[] = [], references: Boat[] = [];
     for (const team of setup.teams) {
@@ -85,26 +109,30 @@ export function normalizeYb(value: unknown, positions: Map<number, Position[]>):
             return name;
         });
         const track = positions.get(team.id) || [];
+        // Equal-time fixes retain newest-first wire order. Prefer the first of
+        // the newest timestamp group, matching YB's independently rendered Simple view.
+        const latest = track.find(point => point.timestamp === track.at(-1)?.timestamp) || null;
         const boat: Boat = { tracker_id: String(team.id), name: team.name, boat_name: team.owner ?? null,
-            status: team.status ?? '', classes, latest_position: track.at(-1) || null, track };
+            status: team.status ?? '', classes, latest_position: latest, track };
         if (team.colour && /^[a-f0-9]{6}$/i.test(team.colour)) boat.color = '#' + team.colour;
-        (classes.includes('Previous Competitors') ? references : competitors).push(boat);
+        (classes.some(name => /^(previous competitors|reference(?: boats)?|ghost(?: boats)?|historical(?: competitors| boats)?)$/i.test(name.trim())) ? references : competitors).push(boat);
     }
     if ([...positions.keys()].some(id => !ids.has(id))) throw new Error('track positions contain unknown teams.');
     if (!competitors.some(boat => boat.latest_position)) throw new Error('The tracker returned no current competitor positions.');
-    return { schema_version: 1, race: 'ggr2026', fetched_at: new Date().toISOString(),
+    return { schema_version: 1, race: code, title: setup.title.trim(), fetched_at: new Date().toISOString(),
         competitors, reference_boats: references };
 }
 
-export async function fetchYbRace(signal?: AbortSignal, request: typeof fetch = fetch): Promise<Race> {
+export async function fetchYbRace(input: string, signal?: AbortSignal, request: typeof fetch = fetch): Promise<Race> {
+    const code = parseRaceCode(input), endpoints = ybEndpoints(code);
     // Plain CORS GETs: no credentials, API keys, custom headers, proxy, or own server.
     const options: RequestInit = { signal, mode: 'cors', credentials: 'omit' };
     const responses = await Promise.all([
-        request(YB_ENDPOINTS.setup, options), request(YB_ENDPOINTS.history, options),
+        request(endpoints.setup, options), request(endpoints.history, options),
     ]);
     for (let i = 0; i < responses.length; i++) {
         if (!responses[i].ok) throw new Error(`Tracker ${i === 0 ? 'metadata' : 'history'} returned HTTP ${responses[i].status}.`);
     }
     const [setup, binary] = await Promise.all([responses[0].json(), responses[1].arrayBuffer()]);
-    return normalizeYb(setup, decodePositions(binary));
+    return normalizeYb(setup, decodePositions(binary), code);
 }

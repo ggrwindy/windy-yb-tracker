@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { setup, binary as buffer, expected } from './fixtures.mjs';
-import { decodePositions, normalizeYb, fetchYbRace, YB_ENDPOINTS } from '../src/yb.ts';
+import { decodePositions, normalizeYb, fetchYbRace, ybEndpoints } from '../src/yb.ts';
 
 test('every real tracker fix and boat matches the reference fixture', () => {
-    const actual = normalizeYb(setup, decodePositions(buffer));
+    const actual = normalizeYb(setup, decodePositions(buffer), 'ggr2026');
     const summarize = ({ track, ...boat }) => ({ ...boat, track_length: track.length,
         track_sha256: createHash('sha256').update(JSON.stringify(track)).digest('hex') });
     assert.deepEqual(actual.competitors.map(summarize), expected.competitors);
@@ -47,7 +47,7 @@ test('truncated, unknown, duplicate and invalid binary records fail clearly', ()
     assert.throws(() => decodePositions(wire(0, [Buffer.from('800100000000', 'hex')])), /preceding absolute/);
     assert.throws(() => decodePositions(wire(0, [absolute(9100000)])), /coordinate/);
     assert.throws(() => decodePositions(wire(0, [absolute(), Buffer.from('002a0000', 'hex')])), /Duplicate/);
-    assert.throws(() => normalizeYb(setup, new Map([[9999, []]])), /unknown teams/);
+    assert.throws(() => normalizeYb(setup, new Map([[9999, []]]), 'ggr2026'), /unknown teams/);
 });
 
 test('direct acquisition uses only two credential-free CORS GETs and propagates errors', async () => {
@@ -57,13 +57,13 @@ test('direct acquisition uses only two credential-free CORS GETs and propagates 
         calls.push([url, options]);
         return { ok: true, json: async () => setup, arrayBuffer: async () => buffer };
     };
-    const race = await fetchYbRace(controller.signal, request);
+    const race = await fetchYbRace('ggr2026', controller.signal, request);
     assert.equal(race.competitors.length, 16);
-    assert.deepEqual(calls.map(([url]) => url), Object.values(YB_ENDPOINTS));
+    assert.deepEqual(calls.map(([url]) => url), Object.values(ybEndpoints('ggr2026')));
     for (const [, options] of calls) assert.deepEqual(options, { signal: controller.signal, mode: 'cors', credentials: 'omit' });
-    await assert.rejects(fetchYbRace(undefined, async () => ({ ok: false, status: 503 })), /HTTP 503/);
+    await assert.rejects(fetchYbRace('ggr2026', undefined, async () => ({ ok: false, status: 503 })), /HTTP 503/);
     controller.abort();
-    await assert.rejects(fetchYbRace(controller.signal, async (_, options) => {
+    await assert.rejects(fetchYbRace('ggr2026', controller.signal, async (_, options) => {
         options.signal.throwIfAborted();
     }), { name: 'AbortError' });
 });

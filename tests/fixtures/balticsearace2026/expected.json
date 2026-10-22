@@ -1,0 +1,144 @@
+{
+  "source": "https://yb.tl/Simple/balticsearace2026",
+  "captured_at": "2026-10-22T06:40:48.070Z",
+  "latest_positions": [
+    {
+      "tracker_id": "1",
+      "name": "AMAZIGH",
+      "latitude": 59.3489,
+      "longitude": 18.1024
+    },
+    {
+      "tracker_id": "2",
+      "name": "BEDOUIN",
+      "latitude": 60.1694,
+      "longitude": 24.9637
+    },
+    {
+      "tracker_id": "3",
+      "name": "BELMONT",
+      "latitude": 60.17,
+      "longitude": 24.9636
+    },
+    {
+      "tracker_id": "4",
+      "name": "BIANCO",
+      "latitude": 60.1491,
+      "longitude": 24.9819
+    },
+    {
+      "tracker_id": "5",
+      "name": "BLACK PEARL",
+      "latitude": 60.1601,
+      "longitude": 24.9698
+    },
+    {
+      "tracker_id": "6",
+      "name": "BLUR",
+      "latitude": 60.1693,
+      "longitude": 24.9628
+    },
+    {
+      "tracker_id": "8",
+      "name": "C-ME",
+      "latitude": 60.1699,
+      "longitude": 24.9635
+    },
+    {
+      "tracker_id": "7",
+      "name": "CAP",
+      "latitude": 60.1692,
+      "longitude": 24.9632
+    },
+    {
+      "tracker_id": "9",
+      "name": "INFERNA",
+      "latitude": 60.1693,
+      "longitude": 24.963
+    },
+    {
+      "tracker_id": "11",
+      "name": "JOLENE",
+      "latitude": 60.1692,
+      "longitude": 24.9629
+    },
+    {
+      "tracker_id": "12",
+      "name": "KIND OF MAGIC",
+      "latitude": 60.169,
+      "longitude": 24.9633
+    },
+    {
+      "tracker_id": "13",
+      "name": "MAXCITING",
+      "latitude": 60.1692,
+      "longitude": 24.9628
+    },
+    {
+      "tracker_id": "14",
+      "name": "MOANA",
+      "latitude": 60.16981666666667,
+      "longitude": 24.96355
+    },
+    {
+      "tracker_id": "15",
+      "name": "NICA",
+      "latitude": 60.169716666666666,
+      "longitude": 24.961683333333333
+    },
+    {
+      "tracker_id": "16",
+      "name": "PARLAN",
+      "latitude": 60.1624,
+      "longitude": 24.848300000000002
+    },
+    {
+      "tracker_id": "17",
+      "name": "RAINDANCE MAGGIE",
+      "latitude": 60.1692,
+      "longitude": 24.9626
+    },
+    {
+      "tracker_id": "18",
+      "name": "RUSH",
+      "latitude": 60.1425,
+      "longitude": 24.7361
+    },
+    {
+      "tracker_id": "19",
+      "name": "SCHLUSSEL VON BREMEN",
+      "latitude": 60.17,
+      "longitude": 24.9635
+    },
+    {
+      "tracker_id": "20",
+      "name": "SELENE",
+      "latitude": 60.1694,
+      "longitude": 24.9633
+    },
+    {
+      "tracker_id": "21",
+      "name": "SPIRIT",
+      "latitude": 60.169,
+      "longitude": 24.9638
+    },
+    {
+      "tracker_id": "22",
+      "name": "STORA BLA",
+      "latitude": 59.7725,
+      "longitude": 19.3747
+    },
+    {
+      "tracker_id": "23",
+      "name": "TEAM MOBLINE",
+      "latitude": 60.1692,
+      "longitude": 24.963
+    },
+    {
+      "tracker_id": "24",
+      "name": "TEGU",
+      "latitude": 60.1693,
+      "longitude": 24.9634
+    }
+  ]
+}

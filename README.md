@@ -1,28 +1,12 @@
-# GGR 2026 Windy plugin
+# YB Race Tracker for Windy
 
-Competitor positions and historical tracks over Windy weather maps. The plugin fetches directly from the public tracker; no backend or database is required.
+Experimental multi-race tracker derived from [GGR 2026 Windy plugin](https://github.com/ggrwindy/windyggr), with its Git history preserved. This repository develops race selection independently; the original repository and its published GGR-only plugin stay separate.
 
-This project was built using AI, with OpenAI Codex used for implementation, testing, and documentation.
+Built using AI and OpenAI Codex for implementation, testing, and documentation.
 
-![Golden Globe Race 2026 tracker showing boats, historical tracks and skipper controls on Windy](src/screenshot.jpg)
+![YB Race Tracker showing a selected public race on Windy](src/screenshot.jpg)
 
-## Install the published plugin
-
-The [gallery review request](https://community.windy.com/post/234182) has been published as `goldsmith065`. Gallery approval is pending. Until Windy approves the listing, install the published public release directly:
-
-1. Open [Windy Plugins](https://www.windy.com/plugins).
-2. Choose **Load plugin directly from URL**.
-3. Paste this URL and choose **Install untrusted plugin**:
-
-   ```text
-   https://windy-plugins.com/18061010/windy-plugin-ggr2026/0.3.5/plugin.min.js
-   ```
-
-4. Open **Golden Globe Race 2026** from Windy's menu, or use [the installed tracker link](https://www.windy.com/plugin/ggr2026).
-
-After approval, find **Golden Globe Race 2026** in [Windy’s plugin gallery](https://www.windy.com/plugins) and choose Install. Windy hosts the plugin; no local server is needed. Source and the release archive are available in [GitHub release v0.3.5](https://github.com/ggrwindy/windyggr/releases/tag/v0.3.5).
-
-## Local development
+## Try it locally
 
 Requires Node.js 22.18 or later.
 
@@ -31,67 +15,68 @@ npm ci
 npm start
 ```
 
-Open [Windy developer mode](https://www.windy.com/developer-mode), enter `http://localhost:9999/plugin.js`, press Tab, then select **Install & open plugin**. Review Windy's developer terms yourself if prompted.
+The bundle server listens only on `127.0.0.1:10000`. Open [Windy developer mode](https://www.windy.com/developer-mode), enter `http://localhost:10000/plugin.js`, press Tab, and choose **Install & open plugin**. Complete Windy's developer terms yourself if prompted. Keep the local server running while testing. Stop it with Ctrl+C.
 
-The development server binds to `127.0.0.1:9999` and serves only the built plugin files. Keep it running when loading the local plugin. Stop it with Ctrl+C.
+The experimental plugin has its own identity, `windy-plugin-yb-tracker`, and route `/yb-race-tracker`. It is configured as private and has not been submitted to the gallery. The GGR-only plugin uses a different identity and preferences.
 
-```sh
-npm run dev    # rebuild on changes; reload the plugin in Windy
-npm run check  # Svelte and TypeScript checks
-npm run build  # build dist/plugin.js, plugin.min.js and plugin.json
-npm test       # run the offline regression tests after building
-```
+Enter a public YB race code or HTTPS race link and choose **Load race**. The input offers these tested examples:
+
+| Race | Code | Capture coverage |
+| --- | --- | --- |
+| Golden Globe Race 2026 | `ggr2026` | Original fixture: 16 competitors and 4 reference entries |
+| RORC Baltic Sea Race 2026 | `balticsearace2026` | 24 teams, 23 with fixes; 24,298 historical fixes |
+| Pacific Cup | `paccup2026` | 49 teams; 39,981 historical fixes |
+
+Titles come from race metadata. Favorites, visibility, track window, reference display, and automatic refresh are saved separately for each race. The last successfully loaded race is restored on reopening. A failed selection leaves the previous race on the map. Superseded requests are cancelled, and late results cannot replace the active race.
 
 ## Controls
 
-- Star a skipper to move them to the top and emphasize their boat and track.
-- Toggle boats individually, search, or use All/None. Fit fleet frames selected competitors, excluding reference and retired boats.
-- Choose full tracks, seven days, 24 hours, or tracks off.
-- Enable reference boats to show previous-race tracks.
-- Click a boat or skipper for GPS coordinates, time and average navigation details. Click outside the popup to dismiss it.
-- Refresh manually or enable automatic refresh every ten minutes. It defaults to on; browser preferences are saved.
-- Collapse the tracker with **−** or close it with **×**.
+- Star a team to move it to the top and emphasize its marker and track.
+- Search teams, toggle visibility, or use All/None.
+- Fit fleet frames selected competitors, excluding reference entries and retired teams.
+- Choose full history, seven days, 24 hours, or tracks off.
+- Show reference entries when the race identifies them with explicit reference, ghost, historical, or previous-competitor class labels.
+- Click a team or marker for GPS time, coordinates, and average navigation details; click outside to dismiss.
+- Automatic refresh defaults to every ten minutes. GPS reporting frequency depends on the race. Weather follows Windy's forecast time; teams show their latest GPS fixes.
 
-Weather follows Windy's forecast timeline. Boats show their latest GPS fix, usually published every four hours. Favorites, visibility and display settings stay in browser local storage.
+## Compatibility and data
 
-## Data and distribution
+The browser makes two credential-free CORS GETs directly to `https://cf.yb.tl`: `JSON/<race>/RaceSetup` and `BIN/<race>/AllPositions3`. There is no backend, proxy, or database. Race input accepts official `yb.tl`/`cf.yb.tl` HTTPS links or race codes; requests always use the fixed data host.
 
-`src/yb.ts` reads race metadata and binary position history from `https://cf.yb.tl` using credential-free HTTPS requests. The tracker controls history availability. Failed requests retain the last successful load until the page is reloaded.
+This supports compatible public races, not every YB event. Protected, unavailable, differently encoded, or inaccessible endpoints can fail. Some public race endpoints returned HTTP 503 during compatibility testing. Those failures are surfaced without clearing the previous successful load. Update and archive availability are controlled by the source tracker.
 
-Tests use a fixed public tracker capture in `tests/fixtures/`, including expected metadata and track checksums. They run without network access.
+Class labels are used conservatively for reference detection; unknown classes remain competitors. The plugin does not reproduce an official leaderboard, handicaps, race course, or forecast-time race playback. Team names and the secondary owner/boat text follow the source metadata.
 
-The self-contained JavaScript bundles include the plugin styles. Publish through [Windy's plugin hosting workflow](https://docs.windy-plugins.com/getting-started/publishing-plugin.html) for distribution. Configuration lives in `src/pluginConfig.ts` and enables public distribution with `private: false`. The gallery image is `src/screenshot.jpg`.
+When several fixes share the latest GPS timestamp, the first record in YB's newest-first wire order is used as the latest position. All historical records are preserved, including duplicate timestamps.
 
-## Deploy to Windy
-
-Deployment uploads the static bundle and gallery screenshot to Windy with `private: false`. Anyone with the installation URL can use it, without contacting a server of ours. Windy staff must review and approve the plugin before it appears in the gallery.
-
-### One-time setup
-
-Publishing requires Git and `tar`.
-
-1. Sign into [Windy API keys](https://api.windy.com/keys) as `goldsmith065`. Use that account’s **Windy Plugins API** key; Map Forecast keys do not publish plugins. The Windy publishing account is `goldsmith065`; the GitHub repository account is `ggrwindy`.
-2. Use the release repository [ggrwindy/windyggr](https://github.com/ggrwindy/windyggr), authenticated as `ggrwindy`. Commit and push this source, then create a release matching the version in `src/pluginConfig.ts` and `package.json`.
-3. Copy `.windy-publish.env.example` to `.windy-publish.env`. Fill in `WINDY_API_KEY` and the repository HTTPS URL in `WINDY_REPOSITORY`. This local file is ignored by Git; keep it out of chat and source control.
-
-### Publish a release
-
-Update both version fields for subsequent releases, commit and push the changes, and create the matching GitHub release. Windy requires each upload to have a new version.
+## Development and verification
 
 ```sh
-npm ci
-npm run deploy:prepare  # checks, builds, tests, and creates dist/plugin.tar without uploading
-npm run deploy         # repeats validation, uploads to Windy, and verifies the hosted bundle
+npm run dev    # watch/rebuild; use Reload plugin in Windy after changes
+npm run check  # Svelte and TypeScript diagnostics
+npm run build # production bundles and manifest in dist/
+npm test      # offline regression tests; build first
 ```
 
-The uploader uses the actual Git commit and repository metadata. It requires a clean working tree and packages only the three plugin files and gallery screenshot, with neutral archive ownership. It sends the API key only to Windy's official upload endpoint; the key is never embedded in the bundle.
+Live Windy browser testing also loaded Round the Island Race 2026 (`rti2026`, 47 teams with fixes), exercised returning to a race with its saved favorites, rejected an unrelated URL without clearing the fleet, and checked team popups and closing/reopening. Some races that returned HTTP 503 in command-line checks loaded successfully in Windy, so endpoint failures are not treated as proof that a race is incompatible.
 
-The command prints the hosted installation URL and saves a receipt in `dist/publish-result.json`. Attach the resulting `dist/plugin.tar` to the matching GitHub release so its asset is the exact uploaded archive. Update the installation URL above for the new version. Install through Windy Plugins and confirm positions, tracks and favorites still work after a full reload with the local development server stopped.
+The 17 tests cover the original GGR behavior, race-code/link validation, fixed-host requests, explicit reference classes, same-second fixes, cross-race preference isolation, switching, last-race restoration, failures, cancelled/stale requests, popups, and cleanup.
 
-### Gallery review
+Fixtures under `tests/fixtures/` include captured public metadata and position binaries. The additional races include independently captured latest coordinates from [Baltic Simple view](https://yb.tl/Simple/balticsearace2026) and [Pacific Cup Simple view](https://yb.tl/Simple/paccup2026). All 72 available latest positions are compared against those independent values within the Simple view's coordinate rounding. Tests do not access the network.
 
-After the first public release is uploaded, post its hosted installation URL and source repository in [Windy’s finished plugins thread](https://community.windy.com/topic/31066/list-of-finished-windy-plugins-v42), asking staff to review and add it to the gallery. Use the Windy account `goldsmith065`. Include a short feature summary and the disclosure that it was built using AI and OpenAI Codex. New forum users’ posts may be queued for moderation before staff can review the plugin. Setting `private: false` makes a release eligible; it does not grant approval automatically.
+`src/screenshot.jpg` shows the experimental interface. Production bundles include styles; generated files live in ignored `dist/`.
 
-Keep the gallery screenshot current when the interface changes. Once approved, update the installation instructions above to lead with the gallery installation.
+## Optional private publication
 
-See [Windy's official publishing guide](https://docs.windy-plugins.com/getting-started/publishing-plugin.html) for account setup and gallery review.
+Publishing is separate from local testing. No publishing credential is copied from the original repository.
+
+For a private test release, use a Windy Plugins API key from the intended Windy account, copy `.windy-publish.env.example` to `.windy-publish.env`, and fill in the key. Keep `WINDY_REPOSITORY=https://github.com/ggrwindy/windy-yb-tracker`. The file is ignored by Git and must never be committed.
+
+Update both version fields, commit/push the source, create a matching GitHub release, then run:
+
+```sh
+npm run deploy:prepare  # validate and package without uploading
+npm run deploy         # upload to Windy and verify hosted bundle bytes
+```
+
+The publisher requires `private: true`, a clean Git tree, matching versions, and a gallery screenshot. It packages only the three plugin files and screenshot with neutral archive ownership, embeds real repository/commit metadata, and sends the key only to Windy's official upload endpoint. Attach the resulting `dist/plugin.tar` to the matching GitHub release. This workflow never updates the original GGR plugin.

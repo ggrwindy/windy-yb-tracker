@@ -21,13 +21,13 @@ export async function prepareRelease(root, repository) {
     const config = JSON.parse(await readFile(join(root, 'dist/plugin.json'), 'utf8'));
     const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
     if (config.name !== pkg.name || config.version !== pkg.version) throw new Error('Package and built plugin versions must match.');
-    if (config.private !== false) throw new Error('This deployment process expects public distribution (private: false).');
+    if (config.private !== true) throw new Error('This deployment process expects experimental private distribution (private: true).');
     if (!/^screenshot\.(jpg|png|webp|jpeg)$/.test(config.screenshot || '')) {
-        throw new Error('Public releases require a gallery screenshot in src/screenshot.jpg (or png, webp, jpeg).');
+        throw new Error('Releases require a gallery screenshot in src/screenshot.jpg (or png, webp, jpeg).');
     }
     const repositoryName = `https://github.com/${match[1]}/${match[2]}`;
     const manifest = { ...config, repositoryName, repositoryOwner: match[1], commitSha };
-    const stage = await mkdtemp(join(tmpdir(), 'ggr-plugin-'));
+    const stage = await mkdtemp(join(tmpdir(), 'yb-plugin-'));
     const archive = join(root, 'dist/plugin.tar');
     const minified = await readFile(join(root, 'dist/plugin.min.js'));
     try {

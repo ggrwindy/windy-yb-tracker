@@ -1,0 +1,300 @@
+{
+  "source": "https://yb.tl/Simple/paccup2026",
+  "captured_at": "2026-10-22T06:40:48.098Z",
+  "latest_positions": [
+    {
+      "tracker_id": "1",
+      "name": "Adrenalin",
+      "latitude": 37.8874,
+      "longitude": -122.5158
+    },
+    {
+      "tracker_id": "10",
+      "name": "Akumu",
+      "latitude": 37.9083,
+      "longitude": -122.3848
+    },
+    {
+      "tracker_id": "56",
+      "name": "Apsaras",
+      "latitude": 21.4171,
+      "longitude": -157.7662
+    },
+    {
+      "tracker_id": "25",
+      "name": "Aquavit",
+      "latitude": 21.4167,
+      "longitude": -157.7661
+    },
+    {
+      "tracker_id": "46",
+      "name": "Bazinga",
+      "latitude": 21.4169,
+      "longitude": -157.7659
+    },
+    {
+      "tracker_id": "27",
+      "name": "Cazan",
+      "latitude": 21.4168,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "39",
+      "name": "Chinook",
+      "latitude": 47.6822,
+      "longitude": -122.4057
+    },
+    {
+      "tracker_id": "48",
+      "name": "Dark Horse",
+      "latitude": 21.4167,
+      "longitude": -157.7661
+    },
+    {
+      "tracker_id": "23",
+      "name": "Dorado",
+      "latitude": 33.9828,
+      "longitude": -118.4489
+    },
+    {
+      "tracker_id": "55",
+      "name": "Duende",
+      "latitude": 37.9525,
+      "longitude": -121.7317
+    },
+    {
+      "tracker_id": "26",
+      "name": "Flashgirl",
+      "latitude": 21.416666666666668,
+      "longitude": -157.76601666666667
+    },
+    {
+      "tracker_id": "19",
+      "name": "Free Bowl of Soup",
+      "latitude": 21.4168,
+      "longitude": -157.7659
+    },
+    {
+      "tracker_id": "13",
+      "name": "Freedom",
+      "latitude": 37.871433333333336,
+      "longitude": -122.46278333333333
+    },
+    {
+      "tracker_id": "16",
+      "name": "Gem",
+      "latitude": 48.421,
+      "longitude": -123.3711
+    },
+    {
+      "tracker_id": "30",
+      "name": "Green Buffalo",
+      "latitude": 37.9087,
+      "longitude": -122.3834
+    },
+    {
+      "tracker_id": "47",
+      "name": "Halawa",
+      "latitude": 21.4175,
+      "longitude": -157.7686
+    },
+    {
+      "tracker_id": "22",
+      "name": "Keaka",
+      "latitude": 37.7845,
+      "longitude": -122.2677
+    },
+    {
+      "tracker_id": "24",
+      "name": "Lightspeed",
+      "latitude": 37.9085,
+      "longitude": -122.3832
+    },
+    {
+      "tracker_id": "33",
+      "name": "Marisa",
+      "latitude": 21.416716666666666,
+      "longitude": -157.76596666666666
+    },
+    {
+      "tracker_id": "21",
+      "name": "Maritimo 160",
+      "latitude": 21.4277,
+      "longitude": -157.7786
+    },
+    {
+      "tracker_id": "28",
+      "name": "Med Viking II",
+      "latitude": 21.41665,
+      "longitude": -157.76625
+    },
+    {
+      "tracker_id": "58",
+      "name": "Merlin",
+      "latitude": 37.9244,
+      "longitude": -122.3751
+    },
+    {
+      "tracker_id": "54",
+      "name": "Nota Bene",
+      "latitude": 38.1046,
+      "longitude": -122.2671
+    },
+    {
+      "tracker_id": "4",
+      "name": "Oaxaca - Cal Maritime",
+      "latitude": 37.8875,
+      "longitude": -122.5158
+    },
+    {
+      "tracker_id": "40",
+      "name": "Penelope",
+      "latitude": 45.6022,
+      "longitude": -122.6273
+    },
+    {
+      "tracker_id": "3",
+      "name": "Pimu",
+      "latitude": 32.7482,
+      "longitude": -117.2475
+    },
+    {
+      "tracker_id": "37",
+      "name": "Pyewacket 68",
+      "latitude": 32.7219,
+      "longitude": -117.2321
+    },
+    {
+      "tracker_id": "32",
+      "name": "Quiver",
+      "latitude": 21.4167,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "20",
+      "name": "Ragtime",
+      "latitude": 21.4167,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "41",
+      "name": "Rahan",
+      "latitude": 21.4166,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "29",
+      "name": "Recidivist",
+      "latitude": 21.4166,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "42",
+      "name": "Shake and Bake",
+      "latitude": 21.434,
+      "longitude": -157.783
+    },
+    {
+      "tracker_id": "11",
+      "name": "Shaman",
+      "latitude": 37.8874,
+      "longitude": -122.5155
+    },
+    {
+      "tracker_id": "15",
+      "name": "Shark On Bluegrass",
+      "latitude": 37.865116666666665,
+      "longitude": -122.31533333333333
+    },
+    {
+      "tracker_id": "17",
+      "name": "Stargazer",
+      "latitude": 47.6829,
+      "longitude": -122.4059
+    },
+    {
+      "tracker_id": "43",
+      "name": "Such Fast",
+      "latitude": 21.434,
+      "longitude": -157.7766
+    },
+    {
+      "tracker_id": "50",
+      "name": "Sun Dragon",
+      "latitude": 21.67415,
+      "longitude": -157.13868333333335
+    },
+    {
+      "tracker_id": "36",
+      "name": "Surf",
+      "latitude": 21.41665,
+      "longitude": -157.76601666666667
+    },
+    {
+      "tracker_id": "53",
+      "name": "TC",
+      "latitude": 21.4166,
+      "longitude": -157.7661
+    },
+    {
+      "tracker_id": "14",
+      "name": "The Kodiak Express",
+      "latitude": 21.4167,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "31",
+      "name": "True Love",
+      "latitude": 21.416683333333335,
+      "longitude": -157.76596666666666
+    },
+    {
+      "tracker_id": "38",
+      "name": "Turbo Camper",
+      "latitude": 21.416733333333333,
+      "longitude": -157.7661
+    },
+    {
+      "tracker_id": "45",
+      "name": "Ventana",
+      "latitude": 37.9081,
+      "longitude": -122.383
+    },
+    {
+      "tracker_id": "8",
+      "name": "Vitesse",
+      "latitude": 21.41658333333333,
+      "longitude": -157.76625
+    },
+    {
+      "tracker_id": "18",
+      "name": "Viva",
+      "latitude": 37.8875,
+      "longitude": -122.5157
+    },
+    {
+      "tracker_id": "44",
+      "name": "Wolfpack",
+      "latitude": 21.4167,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "35",
+      "name": "Zaff",
+      "latitude": 21.4165,
+      "longitude": -157.766
+    },
+    {
+      "tracker_id": "9",
+      "name": "Zeus",
+      "latitude": 21.416733333333333,
+      "longitude": -157.76611666666668
+    },
+    {
+      "tracker_id": "2",
+      "name": "io",
+      "latitude": 21.4171,
+      "longitude": -157.76618333333334
+    }
+  ]
+}

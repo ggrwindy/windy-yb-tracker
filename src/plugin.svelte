@@ -1,9 +1,14 @@
-<section class="ggr-panel" aria-label="Golden Globe Race tracker">
+<section class="yb-panel" aria-label="YB race tracker">
     <header>
-        <div><span class="eyebrow">GOLDEN GLOBE RACE</span><h2>Alone around the world <span>2026</span></h2></div>
+        <div><span class="eyebrow">YB RACE TRACKER</span><h2>{race?.title || 'Choose a public race'}</h2></div>
         <button class="collapse" on:click={() => collapsed = !collapsed} aria-label={collapsed ? 'Expand tracker' : 'Collapse tracker'}>{collapsed ? '+' : '−'}</button>
     </header>
     {#if !collapsed}
+        <form class="race-picker" on:submit|preventDefault={loadRace}>
+            <label for="yb-race-input">Race URL or code</label>
+            <div><input id="yb-race-input" type="text" aria-label="YB race URL or code" bind:value={raceInput} list="yb-race-examples" placeholder="https://yb.tl/race-code" /><button type="submit">Load race</button></div>
+            <datalist id="yb-race-examples">{#each EXAMPLE_RACES as example}<option value={example.code}>{example.title}</option>{/each}</datalist>
+        </form>
         <div class="toolbar">
             <button on:click={fitFleet} disabled={!race}>Fit fleet</button>
             <button on:click={() => refresh()} disabled={loading}>{loading ? 'Loading…' : 'Refresh'}</button>
@@ -12,21 +17,21 @@
         {#if error}<p class="error" role="alert">{error}{race ? ' Showing the last successful load.' : ''}</p>{/if}
         {#if race}
             <div class="summary">
-                <span><b>{visibleBoats.length}</b> boats on map</span>
+                <span><b>{visibleBoats.length}</b> teams on map</span>
                 <span class:warning={now - Date.parse(race.fetched_at) > 1800000}>Updated {ageLabel(race.fetched_at, now)}</span>
             </div>
             <div class="filters">
                 <label>Tracks <select bind:value={trackWindow}><option value="all">Full history</option><option value="168">Last 7 days</option><option value="24">Last 24 hours</option><option value="none">Off</option></select></label>
                 <label><input type="checkbox" bind:checked={showReferences} /> Reference boats</label>
             </div>
-            <p class="hint">GPS fixes usually arrive every 4 hours. Weather follows Windy's forecast time; boats show their latest GPS fix.</p>
-            <div class="search-row"><input type="text" aria-label="Search competitors" placeholder="Find a skipper or boat" bind:value={search} /><button on:click={() => setAll(true)}>All</button><button on:click={() => setAll(false)}>None</button></div>
+            <p class="hint">Update frequency depends on the race. Weather follows Windy's forecast time; teams show their latest GPS fix.</p>
+            <div class="search-row"><input type="text" aria-label="Search competitors" placeholder="Find a team or boat" bind:value={search} /><button on:click={() => setAll(true)}>All</button><button on:click={() => setAll(false)}>None</button></div>
             <div class="boats">
                 {#each listedBoats as boat (boat.tracker_id)}
                     <div class:selected={selectedId === boat.tracker_id} class:favorite={favorites[boat.tracker_id] === true} class="boat" style:--boat-color={colorFor(boat)}>
                         <input type="checkbox" aria-label={'Show ' + boat.name} checked={enabled[boat.tracker_id] !== false} on:change={(event) => toggleBoat(boat.tracker_id, event.currentTarget.checked)} />
                         <button class="boat-info" on:click={() => focusBoat(boat)} disabled={!boat.latest_position}>
-                            <span class="boat-name">{boat.name}</span><span class="boat-meta">{boat.boat_name || 'Historical reference'}{boat.status === 'RETIRED' ? ' · retired' : ''}</span>
+                            <span class="boat-name">{boat.name}</span><span class="boat-meta">{boat.boat_name || (race?.reference_boats.includes(boat) ? 'Reference entry' : '')}{boat.status === 'RETIRED' ? ' · retired' : ''}</span>
                         </button>
                         <button class="favorite-toggle" class:checked={favorites[boat.tracker_id] === true} aria-label={'Favorite ' + boat.name} aria-pressed={favorites[boat.tracker_id] === true} title={favorites[boat.tracker_id] ? 'Remove from favorites' : 'Add to favorites'} on:click={() => toggleFavorite(boat.tracker_id)}>{favorites[boat.tracker_id] ? '★' : '☆'}</button>
                         <span class="age" class:warning={boat.latest_position && now - Date.parse(boat.latest_position.timestamp) > 28800000}>{boat.latest_position ? ageLabel(boat.latest_position.timestamp, now) : 'No fix'}</span>
@@ -47,11 +52,14 @@
 <script lang="ts">
     import { map } from '@windy/map';
     import { onMount, onDestroy } from 'svelte';
-    import { fetchYbRace } from './yb';
+    import { fetchYbRace, parseRaceCode, DEFAULT_RACE, EXAMPLE_RACES } from './yb';
     import { validateRace, colorFor, ageLabel, utcLabel, escapeHtml, navigation, splitTrack } from './race';
     import type { Boat, Race } from './race';
 
-    const storageKey = 'ggr2026-tracker-v1';
+    const lastRaceKey = 'yb-race-tracker:last-race';
+    let raceCode = DEFAULT_RACE;
+    let raceInput = DEFAULT_RACE;
+    const storageKey = (code: string) => `yb-race-tracker-v1:${code}`;
     let race: Race | null = null;
     let enabled: Record<string, boolean> = {};
     let favorites: Record<string, boolean> = {};
@@ -84,10 +92,10 @@
     $: selectedBoat = allBoats.find(boat => boat.tracker_id === selectedId);
     $: selectedNavigation = selectedBoat ? navigation(selectedBoat) : null;
     $: if (ready) draw(visibleBoats, trackWindow, selectedId, favorites);
-    $: if (ready) savePreferences(enabled, trackWindow, showReferences, autoRefresh, favorites);
+    $: if (ready) savePreferences(raceCode, enabled, trackWindow, showReferences, autoRefresh, favorites);
 
-    function savePreferences(boats: Record<string, boolean>, tracks: string, references: boolean, auto: boolean, starred: Record<string, boolean>) {
-        try { localStorage.setItem(storageKey, JSON.stringify({ enabled: boats, trackWindow: tracks, showReferences: references, autoRefresh: auto, favorites: starred })); } catch { /* Storage can be disabled. */ }
+    function savePreferences(code: string, boats: Record<string, boolean>, tracks: string, references: boolean, auto: boolean, starred: Record<string, boolean>) {
+        try { localStorage.setItem(storageKey(code), JSON.stringify({ enabled: boats, trackWindow: tracks, showReferences: references, autoRefresh: auto, favorites: starred })); } catch { /* Storage can be disabled. */ }
     }
 
     function clearPopup() {
@@ -125,7 +133,7 @@
             const nav = navigation(boat);
             const name = escapeHtml(boat.name);
             const size = favorite ? 38 : 28;
-            const icon = L.divIcon({ className: favorite ? 'ggr-marker ggr-favorite-marker' : 'ggr-marker', iconSize: [size, size], iconAnchor: [size / 2, size / 2],
+            const icon = L.divIcon({ className: favorite ? 'yb-marker yb-favorite-marker' : 'yb-marker', iconSize: [size, size], iconAnchor: [size / 2, size / 2],
                 html: `<div title="${name}" style="width:${size}px;height:${size}px;filter:drop-shadow(0 ${favorite ? '2px 4px' : '1px 2px'} #000)"><svg viewBox="0 0 28 28" style="width:${size}px;height:${size}px;transform:rotate(${nav?.bearing || 0}deg)"><path d="M14 2 Q24 17 20 25 L8 25 Q4 17 14 2Z" fill="${color}" stroke="white" stroke-width="${favorite ? 2.4 : 1.6}"/><path d="M14 8V20" stroke="#122634" stroke-width="1.8"/></svg></div>` });
             const marker = new L.Marker([position.latitude, position.longitude], { icon, zIndexOffset: favorite ? 10000 : 0 }).addTo(map);
             marker.on('click', () => focusBoat(boat));
@@ -164,69 +172,98 @@
         queueMicrotask(() => {
             if (!active) return;
             const nav = navigation(boat);
-            const html = `<div style="min-width:210px;line-height:1.6"><strong>${escapeHtml(boat.name)}</strong><br>${escapeHtml(boat.boat_name || 'Historical reference')}<br>${utcLabel(p.timestamp)}<br>${p.latitude.toFixed(5)}°, ${p.longitude.toFixed(5)}°${nav ? `<br>Average ${nav.speed.toFixed(1)} kn · ${Math.round(nav.bearing)}°` : ''}</div>`;
+            const html = `<div style="min-width:210px;line-height:1.6"><strong>${escapeHtml(boat.name)}</strong><br>${escapeHtml(boat.boat_name || (race?.reference_boats.includes(boat) ? 'Reference entry' : ''))}<br>${utcLabel(p.timestamp)}<br>${p.latitude.toFixed(5)}°, ${p.longitude.toFixed(5)}°${nav ? `<br>Average ${nav.speed.toFixed(1)} kn · ${Math.round(nav.bearing)}°` : ''}</div>`;
             clearPopup();
             popup = new L.Popup({ closeOnClick: true }).setLatLng([p.latitude, p.longitude]).setContent(html).openOn(map);
         });
     }
 
-    async function refresh() {
-        if (loading || !active) return;
-        loading = true; error = '';
-        request = new AbortController();
-        const timeout = setTimeout(() => request?.abort(), 25000);
+    function loadRace() {
+        try { void refresh(parseRaceCode(raceInput)); }
+        catch (reason) { error = reason instanceof Error ? reason.message : 'Invalid race.'; }
+    }
+
+    function restorePreferences(code: string) {
+        enabled = {}; favorites = {}; trackWindow = '168'; showReferences = false; autoRefresh = true;
         try {
-            const result = validateRace(await fetchYbRace(request.signal));
-            if (!active) return;
+            const saved = JSON.parse(localStorage.getItem(storageKey(code)) || '{}');
+            const booleans = (value: unknown): Record<string, boolean> => value && typeof value === 'object' && !Array.isArray(value)
+                ? Object.fromEntries(Object.entries(value).filter(([, flag]) => typeof flag === 'boolean')) : {};
+            enabled = booleans(saved.enabled); favorites = booleans(saved.favorites);
+            trackWindow = ['all', '168', '24', 'none'].includes(saved.trackWindow) ? saved.trackWindow : '168';
+            showReferences = saved.showReferences === true;
+            autoRefresh = saved.autoRefresh !== false;
+        } catch { /* Use this race's defaults if preferences are unavailable. */ }
+    }
+
+    async function refresh(code = raceCode) {
+        if (!active) return;
+        request?.abort();
+        const pending = new AbortController();
+        request = pending;
+        loading = true; error = '';
+        const timeout = setTimeout(() => pending.abort(), 25000);
+        try {
+            const result = validateRace(await fetchYbRace(code, pending.signal), code);
+            if (!active || request !== pending) return;
+            if (code !== raceCode) {
+                clearLayers();
+                raceCode = code;
+                restorePreferences(code);
+                selectedId = ''; search = ''; firstFit = true;
+            }
             race = result;
+            raceInput = code;
+            try { localStorage.setItem(lastRaceKey, code); } catch { /* Storage may be disabled. */ }
             now = Date.now();
             if (firstFit) { firstFit = false; queueMicrotask(fitFleet); }
         } catch (reason) {
-            if (active) error = reason instanceof Error && reason.name !== 'AbortError' ? reason.message : 'Data request timed out.';
+            if (active && request === pending) error = `Unable to load ${code}: ` +
+                (reason instanceof Error && reason.name !== 'AbortError' ? reason.message : 'Data request timed out.');
         } finally {
-            clearTimeout(timeout); request?.abort(); request = null; loading = false;
+            clearTimeout(timeout);
+            pending.abort();
+            if (request === pending) { request = null; loading = false; }
         }
     }
 
-    export const onopen = () => { if (active && !race) void refresh(); };
+    export const onopen = () => { if (active && !race && !loading) void refresh(); };
 
     onMount(() => {
         active = true;
         // Capture before Windy's weather picker or map controls consume the click.
         document.addEventListener('click', dismissPopupOutside, true);
-        try {
-            const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
-            enabled = saved.enabled || {};
-            if (saved.favorites && typeof saved.favorites === 'object' && !Array.isArray(saved.favorites)) {
-                favorites = Object.fromEntries(Object.entries(saved.favorites).filter(([, value]) => value === true).map(([id]) => [id, true]));
-            }
-            trackWindow = ['all', '168', '24', 'none'].includes(saved.trackWindow) ? saved.trackWindow : '168';
-            showReferences = saved.showReferences === true;
-            autoRefresh = saved.autoRefresh !== false;
-        } catch { /* Use defaults if preferences are unavailable. */ }
+        try { raceCode = parseRaceCode(localStorage.getItem(lastRaceKey) || DEFAULT_RACE); }
+        catch { raceCode = DEFAULT_RACE; }
+        raceInput = raceCode;
+        restorePreferences(raceCode);
         ready = true;
         void refresh();
         let ticks = 0;
-        interval = setInterval(() => { now = Date.now(); if (++ticks % 10 === 0 && autoRefresh) void refresh(); }, 60000);
+        interval = setInterval(() => { now = Date.now(); if (++ticks % 10 === 0 && autoRefresh && !loading) void refresh(); }, 60000);
     });
 
     onDestroy(() => { active = false; ready = false; document.removeEventListener('click', dismissPopupOutside, true); clearInterval(interval); request?.abort(); clearLayers(); });
 </script>
 
 <style>
-    :global(#plugin-windy-plugin-ggr2026) { width: 354px !important; height: auto !important; max-height: none !important; padding: 0 !important; margin-top: 40px !important; max-width: calc(100vw - 16px); }
-    :global(#plugin-windy-plugin-ggr2026 > .closing-x) { top: 14px !important; right: 12px !important; width: 28px; height: 28px; margin: 0 !important; display: grid; place-items: center; border: 1px solid #597381; border-radius: 5px; background: #263e4c; color: #eaf0f2; }
-    :global(#plugin-windy-plugin-ggr2026 > .closing-x::before), :global(#plugin-windy-plugin-ggr2026 > .closing-x::after) { content: ''; position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; margin: 0; border-radius: 1px; background: currentColor; transform: translate(-50%, -50%) rotate(45deg); }
-    :global(#plugin-windy-plugin-ggr2026 > .closing-x::after) { transform: translate(-50%, -50%) rotate(-45deg); }
-    :global(#plugin-windy-plugin-ggr2026 > .closing-x:hover) { background: #385768; }
+    :global(#plugin-windy-plugin-yb-tracker) { width: 354px !important; height: auto !important; max-height: none !important; padding: 0 !important; margin-top: 40px !important; max-width: calc(100vw - 16px); }
+    :global(#plugin-windy-plugin-yb-tracker > .closing-x) { top: 14px !important; right: 12px !important; width: 28px; height: 28px; margin: 0 !important; display: grid; place-items: center; border: 1px solid #597381; border-radius: 5px; background: #263e4c; color: #eaf0f2; }
+    :global(#plugin-windy-plugin-yb-tracker > .closing-x::before), :global(#plugin-windy-plugin-yb-tracker > .closing-x::after) { content: ''; position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; margin: 0; border-radius: 1px; background: currentColor; transform: translate(-50%, -50%) rotate(45deg); }
+    :global(#plugin-windy-plugin-yb-tracker > .closing-x::after) { transform: translate(-50%, -50%) rotate(-45deg); }
+    :global(#plugin-windy-plugin-yb-tracker > .closing-x:hover) { background: #385768; }
     /* Leave room for Windy's weather menu and bottom controls in its flex column. */
-    .ggr-panel { width: 100%; box-sizing: border-box; max-height: calc(100dvh - 350px); display: flex; flex-direction: column; color: #eaf0f2; font: 13px/1.45 system-ui, sans-serif; background: #132834f2; border: 1px solid #456170; border-radius: 12px; box-shadow: 0 8px 30px #0005; overflow-x: hidden; overflow-y: auto; }
-    header, .toolbar, .summary, .filters, .hint, .search-row, .details, .error { flex-shrink: 0; }
+    .yb-panel { width: 100%; box-sizing: border-box; max-height: calc(100dvh - 350px); display: flex; flex-direction: column; color: #eaf0f2; font: 13px/1.45 system-ui, sans-serif; background: #132834f2; border: 1px solid #456170; border-radius: 12px; box-shadow: 0 8px 30px #0005; overflow-x: hidden; overflow-y: auto; }
+    header, .race-picker, .toolbar, .summary, .filters, .hint, .search-row, .details, .error { flex-shrink: 0; }
     header { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 52px 10px 14px; border-bottom: 1px solid #3b5260; }
-    h2 { margin: 3px 0 0; font-size: 14px; font-weight: 600; line-height: 1.4; } h2 span { color: #efbd69; margin-left: 5px; }
+    h2 { margin: 3px 0 0; font-size: 14px; font-weight: 600; line-height: 1.4; }
     .eyebrow { letter-spacing: 2px; font-size: 9px; color: #b1cbd8; font-weight: 650; }
     button, input, select { font: inherit; } button { cursor: pointer; border: 1px solid #597381; background: #263e4c; color: #eaf0f2; border-radius: 5px; padding: 5px 8px; } button:hover { background: #385768; } button:disabled { opacity: .55; cursor: default; } button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #f2c783; outline-offset: 2px; }
     .collapse { flex-shrink: 0; font-size: 22px; line-height: 1; border: 0; background: transparent; }
+    .race-picker { padding: 9px 12px 0; font-size: 11px; color: #b1cbd8; }
+    .race-picker > div { display: flex; gap: 6px; margin-top: 4px; }
+    .race-picker input { flex: 1; min-width: 0; }
+    .race-picker button { white-space: nowrap; }
     .toolbar { display: flex; align-items: center; gap: 6px; padding: 10px 12px 6px; }
     .auto { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; padding: 5px 8px; border: 1px solid #597381; border-radius: 5px; background: #263e4c; color: #eaf0f2; cursor: pointer; white-space: nowrap; }
     .auto:hover { background: #385768; }
@@ -248,5 +285,5 @@
     .boat.favorite .boat-name { color: #f2c783; font-weight: 700; }
     .details { display: grid; gap: 3px; padding: 9px 14px; border-top: 1px solid #456170; font-size: 11px; } .details strong { color: #f2c783; }
     .error { padding: 8px 14px; color: #ffd0be; background: #693c34; margin: 8px 12px; border-radius: 4px; font-size: 11px; }
-    @media (max-width: 600px) { :global(#plugin-windy-plugin-ggr2026) { width: calc(100vw - 24px) !important; margin-top: 0 !important; } .ggr-panel { max-height: 65dvh; } .boats { max-height: 20vh; } header { padding-top: 8px; padding-bottom: 6px; } .hint { display: none; } }
+    @media (max-width: 600px) { :global(#plugin-windy-plugin-yb-tracker) { width: calc(100vw - 24px) !important; margin-top: 0 !important; } .yb-panel { max-height: 65dvh; } .boats { max-height: 20vh; } header { padding-top: 8px; padding-bottom: 6px; } .hint { display: none; } }
 </style>

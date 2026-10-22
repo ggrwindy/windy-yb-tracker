@@ -1,0 +1,596 @@
+{
+  "title": "Pacific Cup",
+  "tags": [
+    {
+      "id": 83025,
+      "name": "Line Honours"
+    },
+    {
+      "id": 83026,
+      "name": "Pac Cup ORR"
+    },
+    {
+      "id": 83027,
+      "name": "Doublehanded PHRF - Holokai Division"
+    },
+    {
+      "id": 83028,
+      "name": "PHRF 2 - Bridger Marine Division"
+    },
+    {
+      "id": 83029,
+      "name": "Doublehanded ORR - Bobbi Tosse Division"
+    },
+    {
+      "id": 83030,
+      "name": "PHRF 1 - Naos Yachts Division"
+    },
+    {
+      "id": 83031,
+      "name": "ORR 4 - Goslings Rum Division"
+    },
+    {
+      "id": 83032,
+      "name": "ORR 3 - Weems - Plath Division"
+    },
+    {
+      "id": 83033,
+      "name": "ORR 2 - UK Sailmakers Division"
+    },
+    {
+      "id": 83034,
+      "name": "ORR 1 - Pasha Hawaii Division"
+    },
+    {
+      "id": 83035,
+      "name": "Pac Cup PHRF"
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "name": "Adrenalin",
+      "status": "RACING",
+      "colour": "FFEFD5",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Akumu",
+      "status": "RACING",
+      "colour": "8A2BE2",
+      "tags": [
+        83025,
+        83027,
+        83035
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Apsaras",
+      "status": "RACING",
+      "colour": "5F9EA0",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Aquavit",
+      "status": "RACING",
+      "colour": "B0E0E6",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Bazinga",
+      "status": "RACING",
+      "colour": "FAFAD2",
+      "tags": [
+        83025,
+        83027,
+        83035
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Cazan",
+      "status": "RACING",
+      "colour": "7FFFD4",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Chinook",
+      "status": "RACING",
+      "colour": "8FBC8F",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Dark Horse",
+      "status": "RACING",
+      "colour": "DDA0DD",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Dorado",
+      "status": "RACING",
+      "colour": "FF69B4",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Duende",
+      "status": "RACING",
+      "colour": "D2691E",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Flashgirl",
+      "status": "RACING",
+      "colour": "BA55D3",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Free Bowl of Soup",
+      "status": "RACING",
+      "colour": "D2B48C",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Freedom",
+      "status": "RACING",
+      "colour": "F0E68C",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Gem",
+      "status": "RACING",
+      "colour": "1E90FF",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Green Buffalo",
+      "status": "RACING",
+      "colour": "00FF00",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Halawa",
+      "status": "RACING",
+      "colour": "FFA500",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 2,
+      "name": "io",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "FF6347",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Lightspeed",
+      "status": "RACING",
+      "colour": "FFEFD5",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Marisa",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "ADFF2F",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Maritimo 160",
+      "status": "RACING",
+      "colour": "6495ED",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Med Viking II",
+      "status": "RACING",
+      "colour": "FF8C00",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Merlin",
+      "status": "RACING",
+      "colour": "5F9EA0",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Nota Bene",
+      "status": "RACING",
+      "colour": "7FFFD4",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Oaxaca - Cal Maritime",
+      "status": "RACING",
+      "colour": "FFFACD",
+      "tags": [
+        83025,
+        83026,
+        83033
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Penelope",
+      "status": "RACING",
+      "colour": "DC143C",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Pimu",
+      "status": "RETIRED",
+      "colour": "A6A6A6",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Pyewacket 68",
+      "status": "RACING",
+      "colour": "7CFC00",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Quiver",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "98FB98",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Ragtime",
+      "status": "RACING",
+      "colour": "A0522D",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Rahan",
+      "status": "RACING",
+      "colour": "9ACD32",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Recidivist",
+      "status": "RACING",
+      "colour": "D8BFD8",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Shake and Bake",
+      "status": "RACING",
+      "colour": "F0E68C",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Shaman",
+      "status": "RACING",
+      "colour": "B0C4DE",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Shark On Bluegrass",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "0000FF",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Stargazer",
+      "status": "RACING",
+      "colour": "DDA0DD",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Such Fast",
+      "status": "RACING",
+      "colour": "FFEFD5",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Sun Dragon",
+      "status": "RACING",
+      "colour": "8A2BE2",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Surf",
+      "status": "RACING",
+      "colour": "5F9EA0",
+      "tags": [
+        83025,
+        83027,
+        83035
+      ]
+    },
+    {
+      "id": 53,
+      "name": "TC",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "B0E0E6",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 14,
+      "name": "The Kodiak Express",
+      "status": "RACING",
+      "colour": "FAFAD2",
+      "tags": [
+        83025,
+        83026,
+        83031
+      ]
+    },
+    {
+      "id": 31,
+      "name": "True Love",
+      "status": "RACING",
+      "colour": "FF8888",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Turbo Camper",
+      "status": "RACING",
+      "colour": "7FFFD4",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Ventana",
+      "status": "RACING",
+      "colour": "8FBC8F",
+      "tags": [
+        83025,
+        83030,
+        83035
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Vitesse",
+      "status": "RACING",
+      "colour": "DDA0DD",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Viva",
+      "status": "RACING",
+      "colour": "FF69B4",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Wolfpack",
+      "status": "RACING",
+      "colour": "D2691E",
+      "tags": [
+        83025,
+        83026,
+        83029
+      ]
+    },
+    {
+      "id": 35,
+      "name": "Zaff",
+      "owner": " - ",
+      "status": "RACING",
+      "colour": "BA55D3",
+      "tags": [
+        83025,
+        83026,
+        83032
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Zeus",
+      "status": "RACING",
+      "colour": "D2B48C",
+      "tags": [
+        83025,
+        83026,
+        83034
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Keaka",
+      "status": "RACING",
+      "colour": "F0E68C",
+      "tags": [
+        83025,
+        83028,
+        83035
+      ]
+    }
+  ]
+}

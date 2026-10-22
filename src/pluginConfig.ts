@@ -1,18 +1,18 @@
 import type { ExternalPluginConfig } from '@windy/interfaces';
 
 const config: ExternalPluginConfig = {
-    name: 'windy-plugin-ggr2026',
-    version: '0.3.5',
+    name: 'windy-plugin-yb-tracker',
+    version: '0.1.0',
     icon: '⛵',
-    title: 'Golden Globe Race 2026',
-    description: 'Competitor positions and historical tracks over Windy weather maps.',
+    title: 'YB Race Tracker (experimental)',
+    description: 'Choose a public YB race and view its teams and historical tracks over Windy weather maps.',
     author: 'GGR tracker',
-    repository: 'https://github.com/ggrwindy/windyggr',
-    homepage: 'https://github.com/ggrwindy/windyggr#readme',
+    repository: 'https://github.com/ggrwindy/windy-yb-tracker',
+    homepage: 'https://github.com/ggrwindy/windy-yb-tracker#readme',
     desktopUI: 'embedded',
     mobileUI: 'small',
-    routerPath: '/ggr2026',
-    private: false,
+    routerPath: '/yb-race-tracker',
+    private: true,
 };
 
 export default config;

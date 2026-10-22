@@ -10,7 +10,7 @@ async function project(t) {
     const root = await mkdtemp(join(tmpdir(), 'ggr-publish-test-'));
     t.after(() => rm(root, { recursive: true, force: true }));
     await mkdir(join(root, 'dist'));
-    const config = { name: 'windy-plugin-ggr2026', version: '0.3.5', private: false, author: 'GGR tracker', screenshot: 'screenshot.jpg' };
+    const config = { name: 'windy-plugin-yb-tracker', version: '0.1.0', private: true, author: 'GGR tracker', screenshot: 'screenshot.jpg' };
     await writeFile(join(root, 'package.json'), JSON.stringify(config));
     await writeFile(join(root, 'source.js'), 'export const release = true;\n');
     await writeFile(join(root, '.gitignore'), 'dist/\n.windy-publish.env\n');
@@ -51,7 +51,7 @@ test('release archive contains only plugin files, real Git metadata and neutral 
     assert.equal(config.repositoryOwner, 'anonymous-sailor');
     assert.equal(config.repositoryName, 'https://github.com/anonymous-sailor/ggr-plugin');
     assert.equal(config.commitSha, git(['rev-parse', 'HEAD']));
-    assert.equal(config.private, false);
+    assert.equal(config.private, true);
     assert.equal(config.screenshot, 'screenshot.jpg');
 });
 
@@ -61,8 +61,8 @@ test('publishing refuses uncommitted source, mismatched versions and missing rep
     await assert.rejects(prepareRelease(root, ''), /WINDY_REPOSITORY/);
     await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, version: '0.3.6' }));
     await assert.rejects(prepareRelease(root, repo), /versions must match/);
-    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, private: true }));
-    await assert.rejects(prepareRelease(root, repo), /expects public distribution/);
+    await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, private: false }));
+    await assert.rejects(prepareRelease(root, repo), /expects experimental private distribution/);
     await writeFile(join(root, 'dist/plugin.json'), JSON.stringify({ ...config, screenshot: '../secret.jpg' }));
     await assert.rejects(prepareRelease(root, repo), /gallery screenshot/);
     await writeFile(join(root, 'dist/plugin.json'), JSON.stringify(config));
@@ -73,7 +73,7 @@ test('publishing refuses uncommitted source, mismatched versions and missing rep
 test('upload sends the key only to the official endpoint and verifies the hosted bytes', async t => {
     const { root } = await project(t);
     const release = await prepareRelease(root, 'https://github.com/anonymous-sailor/ggr-plugin');
-    const url = 'https://windy-plugins.com/42/windy-plugin-ggr2026/0.3.5/plugin.min.js';
+    const url = 'https://windy-plugins.com/42/windy-plugin-yb-tracker/0.1.0/plugin.min.js';
     const key = 'TEST_PLUGIN_KEY';
     let requests = 0;
     const request = async (target, options) => {

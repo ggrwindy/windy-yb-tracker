@@ -19,19 +19,21 @@ export interface Boat {
 export interface Race {
     schema_version: number;
     race: string;
+    title: string;
     fetched_at: string;
     competitors: Boat[];
     reference_boats: Boat[];
 }
 
-export function validateRace(value: unknown): Race {
+export function validateRace(value: unknown, expectedRace?: string): Race {
     const data = value as Race;
     const validPoint = (p: Position) => p && Number.isFinite(p.latitude) && Math.abs(p.latitude) <= 90 &&
         Number.isFinite(p.longitude) && Math.abs(p.longitude) <= 180 && Number.isFinite(Date.parse(p.timestamp));
-    if (!data || data.schema_version !== 1 || data.race !== 'ggr2026' ||
+    if (!data || data.schema_version !== 1 || typeof data.race !== 'string' || !/^[a-z0-9][a-z0-9_-]{0,79}$/.test(data.race) ||
+        (expectedRace !== undefined && data.race !== expectedRace) || typeof data.title !== 'string' || !data.title.trim() ||
         !Number.isFinite(Date.parse(data.fetched_at)) || !Array.isArray(data.competitors) ||
         !Array.isArray(data.reference_boats) || !data.competitors.length) {
-        throw new Error('Invalid GGR 2026 race data.');
+        throw new Error('Invalid YB race data.');
     }
     const ids = new Set<string>();
     for (const boat of [...data.competitors, ...data.reference_boats]) {

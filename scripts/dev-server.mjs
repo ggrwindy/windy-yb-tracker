@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 
-const port = Number(process.argv[2] || 9999);
+const port = Number(process.argv[2] || 10000);
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Use a port between 1 and 65535.');
 const files = new Map([
     ['/plugin.js', 'text/javascript; charset=utf-8'],
